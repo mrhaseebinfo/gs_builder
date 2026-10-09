@@ -51,24 +51,27 @@ gs_builder/
 │   │
 │   ├── fonts/                        # Self-hosted webfonts (woff2 + woff)
 │   ├── videos/                       # Homepage hero slider videos
-│   ├── maps/                         # ★ Branded map PDFs (company location + 7 society maps)
+│   ├── maps/                         # ★ Branded map PDFs + PNGs (society maps, office map)
 │   └── images/
 │       ├── logo.png                  # GS Builder & Engineers company logo
 │       ├── default-listing.jpg       # ★ Branded fallback image for missing listing photos
-│       ├── contact-map.jpg           # Office locater map (contact page)
-│       ├── certs/                    # ISO certification badges
-│       ├── clients/                  # Partner & society logos
+│       ├── cinematic/                # Cinematic construction photography (CTA/vision/design imagery)
+│       ├── city/                     # Skyline, banner & Islamabad city imagery
+│       ├── csr/                      # CSR program imagery
+│       ├── clients/                  # Partner university logos
 │       ├── expertise/                # Expertise section imagery
-│       ├── group/                    # Division photos & logos
+│       ├── group/                    # Division photos
 │       ├── history/                  # Timeline & international archive imagery
-│       ├── icons/                    # Sector & UI icons
 │       ├── leadership/               # Leader portraits
 │       ├── news/                     # News & events thumbnails
 │       ├── projects/                 # Project hero images (real GS project photos)
 │       ├── services/                 # Service category & society imagery (real photos)
 │       ├── sectors/                  # Sector hero images
-│       └── societies/                # Society gates, streets & aerial photography
+│       └── societies/                # Society streets & aerial photography
 ```
+
+The project's content factsheet (company stats, societies, contact details) lives in
+`docs/data.docs`.
 
 ## Running the Website
 
@@ -92,23 +95,28 @@ Then visit `http://localhost:8000`.
 | Token         | Value     | Usage                          |
 |---------------|-----------|--------------------------------|
 | `--eccDark`   | `#031427` | Dark navy sections, footer, hero overlay |
-| `--eccBlue`   | `#1a3453` | Secondary dark, careers band   |
-| `--eccAccent` | `#ff0100` | GS red — buttons, icons, highlights |
+| `--eccBlue`   | `#1a3453` | Button text on yellow pills, secondary dark |
+| `--eccAccent` | `#ffaa00` | GS yellow — button backgrounds, icons, highlights |
 | `--gold`      | `#ffbc7d` | Accents on dark sections       |
 | Font          | Helvetica Now Display Pro (300–800) | Headings & body |
+
+**Button standard:** every call-to-action uses the pill shape (`border-radius: 999px`)
+with a yellow background (`--eccAccent`) and navy-blue text (`--eccBlue`) — solid
+(`.fill`), outlined (`.outline`), and on-dark (`.btn-white` / `.btn-on-dark`) variants
+all resolve to it.
 
 ## Features
 
 - **Company map PDFs** — branded location map for the head office + official master-plan map for each society; every map downloads via the society card "Download Map" button
 - **"Download Map"** (accent button, saves the society's master-plan PDF) + **"Inventory"** link on every society card
 - **Society cards show only the society name + actions** (no hover overlay text — works on desktop & touch devices identically); D-17 MVHS is written out in full as "Margalla View Housing Scheme"; **Master Plans strip removed** (downloads happen from the cards)
-- **Contact page map card** — "View Location on Map" PDF + "Get Directions" link + downloadable map image
-- **Real photography** — society gates, streets, listings and projects use real site imagery; any missing photo automatically falls back to a branded "Photo coming soon" placeholder with a one-click **Download Image** button
-- **Projects Showcase page** — attractive, client-facing showcase covering Construction, Commercial, Residential and Consultancy streams + clearly-labelled International portfolio; linked from the footer "Projects" link
+- **Contact page map card** — office map image + "Get Directions" pill + "Call First" link
+- **Real photography** — society streets, listings and projects use real site imagery; any missing photo automatically falls back to a branded "Photo coming soon" placeholder with a one-click **Download Image** button
+- **Projects Showcase page** — construction-only showcase (Construction + Turnkey & Finishing streams + clearly-labelled International portfolio); linked from the footer "Projects" link
 - **Navbar "Services" mega-menu card** on hover (all 7 categories + featured society maps + CTA)
 - **Dedicated pages per service category**, each with unique content, imagery, animations and FAQs
 - **Real Estate page** with 8 society cards (name + "Download Map" / "Inventory" actions) and a premium gradient "Browse Inventory" CTA banner
-- **Homepage sectors flip-tiles** — 3D flip animation on hover (touch devices show images natively)
+- **Homepage sectors tiles** on hover the tile widens to double width and reveals the sector photo edge-to-edge (touch devices show images natively)
 - **Creative contact form** — floating labels, name/email/message, Google reCAPTCHA, social links (Facebook & Instagram)
 - **FAQ tabs on contact page** — 5 construction + 5 real-estate questions
 - **Topbar hides on mobile**; header gets a solid dark background so the (larger) hamburger is always visible
