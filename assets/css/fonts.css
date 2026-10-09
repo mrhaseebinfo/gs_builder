@@ -1,0 +1,45 @@
+/* ==========================================================================
+   GS Builder & Engineers — Design System
+   Fonts
+   ========================================================================== */
+
+@font-face {
+  font-family: 'Helvetica Now Display Pro';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('../fonts/HelveticaNowDisplay-Light.woff2') format('woff2'),
+       url('../fonts/HelveticaNowDisplay-Light.woff') format('woff');
+}
+@font-face {
+  font-family: 'Helvetica Now Display Pro';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/HelveticaNowDisplay-Regular.woff2') format('woff2'),
+       url('../fonts/HelveticaNowDisplay-Regular.woff') format('woff');
+}
+@font-face {
+  font-family: 'Helvetica Now Display Pro';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../fonts/HelveticaNowDisplay-Medium.woff2') format('woff2'),
+       url('../fonts/HelveticaNowDisplay-Medium.woff') format('woff');
+}
+@font-face {
+  font-family: 'Helvetica Now Display Pro';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../fonts/HelveticaNowDisplay-Bold.woff2') format('woff2'),
+       url('../fonts/HelveticaNowDisplay-Bold.woff') format('woff');
+}
+@font-face {
+  font-family: 'Helvetica Now Display Pro';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('../fonts/HelveticaNowDisplay-ExtraBold.woff2') format('woff2'),
+       url('../fonts/HelveticaNowDisplay-ExtraBold.woff') format('woff');
+}
