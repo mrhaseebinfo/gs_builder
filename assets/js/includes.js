@@ -128,7 +128,7 @@
     '<li><a href="' + rel('pages/contact.html') + '">Contact us</a></li>' +
     '<li><a href="https://wa.me/923453707530" target="_blank" rel="noopener">WhatsApp</a></li>' +
     '<li><a href="mailto:gs.builder2006@gmail.com">gs.builder2006@gmail.com</a></li>' +
-    '<li><a href="https://www.linkedin.com/company/software-disruption" target="_blank" rel="noopener">LinkedIn</a></li>' +
+    '<li><a href="https://www.linkedin.com/company/gs-builder-engineers" target="_blank" rel="noopener">LinkedIn</a></li>' +
     '<li><a href="https://www.facebook.com/gsbuilderengineers" target="_blank" rel="noopener">Facebook</a></li>' +
     '</ul>' +
     '</div>' +
