@@ -6435,15 +6435,30 @@ img.img-fallback {
   padding-left: 16px;
 }
 
-.psh-stat b {
+.psh-hero .psh-stat b {
   display: block;
   font-size: clamp(24px, 3vw, 34px);
   color: #fff;
   font-weight: 700;
 }
 
-.psh-stat span {
+.psh-hero .psh-stat span {
   color: rgba(255, 255, 255, .68);
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+/* Reusable stat (dark hero variant) */
+.psh-stat b {
+  display: block;
+  font-size: clamp(24px, 3vw, 34px);
+  font-weight: 700;
+  color: var(--eccDark);
+}
+
+.psh-stat span {
+  color: #6a6b70;
   font-size: 13px;
   letter-spacing: .14em;
   text-transform: uppercase;
@@ -6621,6 +6636,19 @@ img.img-fallback {
 
 .psh-band .counters .counter-title {
   color: rgba(255, 255, 255, .6);
+}
+
+/* Light-section variant: reusable stats on white/grey backgrounds */
+.psh-num-grid .psh-stat {
+  border-left-color: var(--eccAccent);
+}
+
+.psh-num-grid .psh-stat b {
+  color: var(--eccDark);
+}
+
+.psh-num-grid .psh-stat span {
+  color: #6a6b70;
 }
 
 /* international portfolio strip */
