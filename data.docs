@@ -1,0 +1,40 @@
+GS Builder & Engineers — data.docs
+==================================
+
+Company facts used across the site content:
+- Established: 2006
+- Head Office: Office # 112, Park View Plaza, D-17/2, MVHS, Islamabad, Pakistan
+- Phone / WhatsApp: +92 345 3707530
+- Email: gs.builder2006@gmail.com
+- Instagram: gsbuilder2006 | Facebook: engfaisalsarwer / gsbuilderengineers
+- Stats: 120+ completed projects, 350+ employees, 8 partner societies, 4 streams
+  (Construction / Commercial / Residential / Consultancy)
+
+Societies covered (with official map PDFs in assets/maps/):
+- D-17 MVHS ........ assets/maps/d-17-mvhs-map.pdf   (photo: services/society-mvhs.jpg)
+- D-18 ECHS ........ assets/maps/d-18-echs-map.pdf   (photo: services/society-echs.jpg)
+- D-18 AWT ......... assets/maps/d-18-awt-map.pdf   (photo: services/society-awt.jpg)
+- B-17 Multi Gardens assets/maps/b-17-multi-map.pdf (photo: services/society-b17.jpg)
+- Faisal Town ...... assets/maps/faisal-town-map.pdf (photo: services/society-faisal-town.jpg)
+- Faisal Hills ..... (same master plan as Faisal Town extension)
+- Wapda Town ....... assets/maps/wapda-town-map.pdf (photo: services/society-wapda.jpg)
+- Mumtaz City ...... assets/maps/mumtaz-city-map.pdf
+
+Company location map PDF: assets/maps/company-location-map.pdf
+  (generated from © OpenStreetMap tiles; office marker at Park View Plaza D-17/2)
+Contact-page map image:   assets/images/contact-map.jpg
+Missing-photo fallback:   assets/images/default-listing.jpg
+
+Real photography map (assets/images/):
+- D-17.png, b-17multi.png, wapdatown.jpg, FaisalHiil.jpeg, images (6).jpeg
+  = real society gates / aerials used on cards & heroes
+- projects/project 1..14, commercial project 2..4, coultancy project.jpg
+  = real project photos used in inventory listings & showcase page
+- design.jpeg, structural.jpeg = consultancy/design review imagery
+
+Navigation entry points for maps & projects:
+- Real Estate page  → per-card "View Map (PDF)" + "Official society maps" strip
+- Inventory listing → "Download Image" button on every card
+- Contact page      → "View Location on Map" + map card + "Get Directions"
+- Footer            → Projects (showcase) + Company Location Map (PDF)
+- Services mega-menu → Featured society map PDFs
