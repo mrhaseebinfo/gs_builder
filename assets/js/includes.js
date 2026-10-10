@@ -70,8 +70,8 @@
     '<div class="search-suggest-title">Popular Searches</div>' +
     '<div class="search-tags">' +
     '<a href="' + rel('pages/services.html') + '">Construction</a>' +
-    '<a href="' + rel('pages/services.html#real-estate') + '">Real Estate</a>' +
-    '<a href="' + rel('pages/services.html#construction') + '">Soil Testing</a>' +
+    '<a href="' + rel('pages/real-estate.html') + '">Real Estate</a>' +
+    '<a href="' + rel('pages/service-soil-testing.html') + '">Soil Testing</a>' +
     '<a href="' + rel('pages/inventory.html') + '">Plots &amp; Houses</a>' +
     '<a href="' + rel('pages/inventory.html') + '">Inventory</a>' +
     '<a href="' + rel('pages/contact.html') + '">Contact</a>' +
