@@ -4378,85 +4378,6 @@ a.tb-item:hover {
 }
 
 /* ==========================================================================
-   Services page — category blocks
-   ========================================================================== */
-.svc-category {
-  display: grid;
-  grid-template-columns: 340px 1fr;
-  gap: 60px;
-  align-items: start;
-  padding: 80px 0;
-  border-bottom: 1px solid #e4e4e6;
-}
-
-.svc-category:first-of-type {
-  border-top: 1px solid #e4e4e6;
-}
-
-.svc-category .svc-cat-head {
-  position: sticky;
-  top: 150px;
-}
-
-.svc-category .svc-cat-head img {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-  margin-bottom: 26px;
-}
-
-.svc-category h2 {
-  margin-bottom: 16px;
-}
-
-.svc-category .svc-cat-head p {
-  color: #58585a;
-  font-size: 16px;
-}
-
-.svc-list {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 26px;
-}
-
-.svc-item {
-  background: var(--off-white);
-  border-top: 3px solid var(--eccDark);
-  padding: 34px 30px;
-  transition: all .35s ease;
-}
-
-.svc-item:hover {
-  border-top-color: var(--eccAccent);
-  transform: translateY(-6px);
-  box-shadow: 0 20px 44px rgba(3, 20, 39, .08);
-}
-
-.svc-item .svc-ico {
-  display: block;
-  width: 46px;
-  height: 46px;
-  color: var(--eccAccent);
-  margin-bottom: 20px;
-}
-
-.svc-item .svc-ico svg {
-  width: 100%;
-  height: 100%;
-}
-
-.svc-item h3 {
-  margin-bottom: 12px;
-}
-
-.svc-item p {
-  font-size: 16px;
-  color: #58585a;
-  margin-bottom: 18px;
-}
-
-/* ==========================================================================
    Inventory page — property cards
    ========================================================================== */
 .inv-filters {
@@ -4596,23 +4517,6 @@ a.tb-item:hover {
 @media (max-width: 1200px) {
   .inv-grid {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  .svc-category {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-
-  .svc-category .svc-cat-head {
-    position: static;
-  }
-
-  .svc-category .svc-cat-head img {
-    height: 260px;
-  }
-
-  .svc-list {
-    grid-template-columns: 1fr;
   }
 }
 
@@ -5957,16 +5861,11 @@ iframe body {
 .gallery-3>*,
 .counters>*,
 .svc-stats>*,
-.svc-list>*,
 .footer-top>* {
   min-width: 0;
 }
 
 @media (max-width: 480px) {
-  .svc-category {
-    padding: 48px 0;
-  }
-
   .contact-form-wrap,
   .cform-main,
   .cform-side {
@@ -7623,5 +7522,445 @@ img {
   .cta-band::after {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* ==========================================================================
+   SERVICES PAGE (pages/services.html) — reference-style layout
+   Left chip hero → left comprehensive intro → alternating category rows
+   (bar headings, "Bold:" service bullets, offset accent-frame images that
+   bleed to the screen edge) → brick-texture trust banner → blueprint
+   process timeline with dashed connectors. Scoped: gsvc-* / gproc-* are
+   only used on services.html
+   ========================================================================== */
+
+/* --- Shared bleed offset: from text container edge to screen edge --- */
+.gsvc-media,
+.gproc-pair {
+  --bleed: calc((min(100vw - 100px, 1400px) - 100vw) / 2);
+}
+
+/* --- Hero: left-aligned chip + heading + text over image --- */
+.page-hero.svc-hero {
+  min-height: 520px;
+  padding: 230px 0 110px;
+  text-align: left;
+}
+
+.page-hero.svc-hero::before {
+  background: linear-gradient(100deg, rgba(3, 20, 39, .9) 8%, rgba(3, 20, 39, .64) 52%, rgba(3, 20, 39, .4) 100%);
+}
+
+.page-hero.svc-hero h1 {
+  font-size: clamp(40px, 4.6vw, 64px);
+  max-width: 840px;
+  margin-bottom: 18px;
+}
+
+.svc-hero-sub {
+  max-width: 880px;
+  font-size: 17px;
+  line-height: 1.72;
+  color: rgba(255, 255, 255, .92);
+}
+
+/* --- Highlight label chip (white in hero, accent in sections) --- */
+.chip-label {
+  display: inline-block;
+  padding: 6px 16px 5px;
+  margin-bottom: 24px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  background: #fff;
+  color: var(--eccBlue);
+}
+
+.chip-label--accent {
+  background: var(--eccAccent);
+  color: var(--eccDark);
+}
+
+/* --- Comprehensive intro (left-aligned, like reference) --- */
+.gsvc-intro {
+  padding: 104px 0 44px;
+}
+
+.gsvc-intro h2 {
+  font-size: clamp(32px, 3.4vw, 46px);
+  margin-bottom: 26px;
+}
+
+.gsvc-intro p {
+  max-width: 980px;
+  font-size: 16.5px;
+  line-height: 1.75;
+  color: #3f4348;
+  text-align: justify;
+}
+
+/* --- Bar headings: vertical accent bar before title --- */
+.bar-title {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  font-size: clamp(28px, 2.8vw, 38px);
+  margin-bottom: 30px;
+}
+
+.bar-title::before {
+  content: '';
+  flex: none;
+  width: 9px;
+  height: 32px;
+  background: var(--eccAccent);
+}
+
+/* --- Category rows --- */
+.gsvc-band--grey {
+  background: #f1f3f6;
+}
+
+.gsvc-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 70px 90px;
+  align-items: center;
+  padding: 88px 0;
+}
+
+.gsvc-points {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.gsvc-points li {
+  margin-bottom: 24px;
+}
+
+.gsvc-points li:last-child {
+  margin-bottom: 0;
+}
+
+.gsvc-points p {
+  font-size: 15.5px;
+  line-height: 1.68;
+  color: #3f4348;
+  text-align: justify;
+  margin: 0;
+}
+
+.gsvc-points b {
+  color: var(--mainColor);
+}
+
+.gsvc-points a {
+  color: inherit;
+  transition: color .3s var(--ease);
+}
+
+.gsvc-points a:hover {
+  color: var(--eccBlue);
+}
+
+/* --- Offset accent frame around row images, bleeding to screen edge --- */
+.gsvc-media {
+  position: relative;
+}
+
+.gsvc-media img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+/* image on the right: frame floats up-right, bleeding right */
+.gsvc-row--imgright .gsvc-media::before {
+  content: '';
+  position: absolute;
+  top: -42px;
+  bottom: -42px;
+  left: 64px;
+  right: var(--bleed);
+  border: 4px solid var(--eccAccent);
+  border-radius: 42px;
+}
+
+/* image on the left: frame floats up-left, bleeding left */
+.gsvc-row--imgleft .gsvc-media {
+  order: -1;
+}
+
+.gsvc-row--imgleft .gsvc-media::before {
+  content: '';
+  position: absolute;
+  top: -42px;
+  bottom: -42px;
+  right: 64px;
+  left: var(--bleed);
+  border: 4px solid var(--eccAccent);
+  border-radius: 42px;
+}
+
+/* --- Trust banner: brick texture + image + statement --- */
+.gsvc-trust {
+  padding: 130px 0 110px;
+  background-color: #071c30;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='128'%3E%3Crect width='256' height='128' fill='%23071c30'/%3E%3Cg fill='%230b2742'%3E%3Crect x='4' y='4' width='120' height='56' rx='6'/%3E%3Crect x='132' y='4' width='120' height='56' rx='6'/%3E%3Crect x='-60' y='68' width='120' height='56' rx='6'/%3E%3Crect x='68' y='68' width='120' height='56' rx='6'/%3E%3Crect x='196' y='68' width='120' height='56' rx='6'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 256px 128px;
+  color: #fff;
+}
+
+.gsvc-trust-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 70px;
+  align-items: end;
+}
+
+.gsvc-trust-inner img {
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 24px 56px rgba(0, 0, 0, .35);
+}
+
+.gsvc-trust h2 {
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1.3;
+}
+
+/* --- Process: chip + heading + paired zigzag timeline on blueprint --- */
+.gproc {
+  position: relative;
+  padding: 110px 0 90px;
+  background: #fff;
+}
+
+.gproc::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('../images/cinematic/blueprints-desk.jpg') center / cover no-repeat;
+  opacity: .08;
+}
+
+.gproc .container {
+  position: relative;
+  z-index: 1;
+}
+
+.gproc-head {
+  text-align: center;
+  margin-bottom: 84px;
+}
+
+.gproc-head h2 {
+  font-size: clamp(30px, 3.2vw, 44px);
+  margin-bottom: 16px;
+}
+
+.gproc-divider {
+  width: 210px;
+  height: 1px;
+  background: #a7aeb6;
+  margin-inline: auto;
+}
+
+.gproc-pair {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 100px;
+  margin-bottom: 74px;
+}
+
+.gproc-pair:last-child {
+  margin-bottom: 0;
+}
+
+/* dashed connector between the pair's dots, bleeding to screen edges */
+.gproc-pair::before {
+  content: '';
+  position: absolute;
+  top: 59px;
+  left: var(--bleed);
+  right: var(--bleed);
+  border-top: 2px dashed #c5ccd5;
+}
+
+.gproc-numwrap {
+  position: relative;
+  height: 60px;
+}
+
+.gproc-num {
+  font-size: 42px;
+  font-weight: 600;
+  line-height: 1;
+  color: #2e3b47;
+}
+
+.gproc-dot {
+  position: absolute;
+  left: 4px;
+  bottom: -7px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--eccAccent);
+}
+
+.gproc-txt {
+  margin-top: 36px;
+}
+
+.gproc-txt h3 {
+  font-size: 26px;
+  margin-bottom: 12px;
+}
+
+.gproc-txt h3 a {
+  color: inherit;
+}
+
+.gproc-txt p {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: #3f4348;
+  text-align: justify;
+  margin: 0;
+}
+
+/* --- Responsive --- */
+@media (max-width: 1100px) {
+  .gsvc-row {
+    gap: 44px;
+    padding: 64px 0;
+  }
+
+  .gproc-pair {
+    gap: 0 56px;
+  }
+}
+
+@media (max-width: 900px) {
+  .page-hero.svc-hero {
+    min-height: 0;
+    padding: 180px 0 80px;
+  }
+
+  .gsvc-row {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .gsvc-row .gsvc-media,
+  .gsvc-row--imgleft .gsvc-media {
+    order: -1;
+  }
+
+  .gsvc-media img {
+    aspect-ratio: 4 / 3;
+  }
+
+  .gsvc-intro {
+    padding: 72px 0 20px;
+  }
+
+  .gsvc-trust-inner {
+    grid-template-columns: 1fr;
+    gap: 44px;
+  }
+
+  .gproc {
+    padding: 80px 0 60px;
+  }
+
+  .gproc-pair {
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin-bottom: 56px;
+  }
+
+  .gproc-pair::before {
+    display: none;
+  }
+
+  .gproc-step + .gproc-step {
+    margin-top: 48px;
+  }
+
+  .gproc-txt {
+    margin-top: 26px;
+  }
+
+  .gproc-numwrap {
+    height: 48px;
+  }
+}
+
+@media (max-width: 640px) {
+  .chip-label {
+    font-size: 15px;
+  }
+
+  .bar-title {
+    gap: 10px;
+  }
+
+  .bar-title::before {
+    width: 7px;
+    height: 26px;
+  }
+
+  .gsvc-row {
+    padding: 56px 0;
+  }
+
+  .gsvc-points p {
+    font-size: 15px;
+  }
+
+  .gsvc-trust {
+    padding: 90px 0 70px;
+  }
+
+  .gsvc-trust h2 {
+    font-size: 25px;
+  }
+
+  .gproc-head {
+    margin-bottom: 56px;
+  }
+
+  .gproc-num {
+    font-size: 34px;
+  }
+
+  .gproc-numwrap {
+    height: 46px;
+  }
+
+  .gproc-dot {
+    bottom: -7px;
+  }
+
+  .gproc-txt h3 {
+    font-size: 21px;
+  }
+
+  /* justify creates rivers on narrow screens — switch to left */
+  .gsvc-intro p,
+  .gsvc-points p,
+  .gproc-txt p {
+    text-align: left;
   }
 }
