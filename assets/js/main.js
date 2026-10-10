@@ -893,23 +893,3 @@
     initMapDownloads();
   });
 })();
-/* ------------------------------------------------------------------
-   18. Society cards → navigate to inventory on click/Enter
-       (cards are divs so they can contain nested quick links)
------------------------------------------------------------------- */
-(function () {
-  'use strict';
-  document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('[data-inv-go]').forEach(function (card) {
-      card.addEventListener('click', function (e) {
-        if (e.target.closest('a')) return; // nested links handle themselves
-        window.location.href = card.dataset.invGo;
-      });
-      card.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' && !e.target.closest('a')) {
-          window.location.href = card.dataset.invGo;
-        }
-      });
-    });
-  });
-})();

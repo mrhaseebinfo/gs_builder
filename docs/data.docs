@@ -29,13 +29,10 @@ Real photography map (assets/images/):
 - D-17.png, b-17multi.png, wapdatown.jpg, FaisalHiil.jpeg, images (6).jpeg
   = real society gates / aerials used on cards & heroes
 - projects/project 1..14, commercial project 2..4, coultancy project.jpg
-  = real project photos used in inventory listings & showcase page
-- design.jpeg, structural.jpeg = consultancy/design review imagery
+  = real project photos used in construction project galleries
 
 Navigation entry points for maps & projects:
 - Real Estate page  → per-card "View Map (PDF)" + "Official society maps" strip
-- Inventory listing → "Download Image" button on every card
 - Contact page      → "View Location on Map" + map card + "Get Directions"
-- Footer            → Projects (showcase) + Company Location Map (PDF)
 - Services mega-menu → Featured society map PDFs
 
