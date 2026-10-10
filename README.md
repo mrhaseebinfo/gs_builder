@@ -21,8 +21,6 @@ gs_builder/
 │   ├── expertise-design-build.html   # Design & Build
 │   ├── expertise-value-engineering.html # Value Engineering
 │   ├── excellence-innovation.html   # Excellence & Innovation (7 processes)
-│   ├── projects.html                 # Full portfolio with live filters (status / scope / sector)
-│   ├── project-showcase.html         # ★ NEW Projects Showcase (Construction / Commercial / Residential / Consultancy + International strip)
 │   ├── sectors.html                  # 11 sectors with sticky side navigation
 │   ├── news-events.html              # Company News & Upcoming Events
 │   ├── faqs.html                     # 18 FAQs accordion
@@ -33,8 +31,7 @@ gs_builder/
 │   ├── service-design.html           # Structural & Architectural Design (FAQs)
 │   ├── service-soil-testing.html     # Soil Testing — Geotechnical (FAQs)
 │   ├── service-smart-home.html       # Smart Home Automation (FAQs)
-│   ├── real-estate.html              # Real Estate — 8 societies, real photos, society map PDFs, premium inventory CTA
-│   ├── inventory.html                # Live listings with real photos, "Download Image" per listing
+│   ├── real-estate.html              # Real Estate — 8 societies, real photos, society map PDFs
 │   ├── contact.html                  # Contact (creative split form + reCAPTCHA + map card + FAQ tabs)
 │   ├── privacy.html                  # Privacy policy
 │   ├── cookies.html                  # Cookie policy

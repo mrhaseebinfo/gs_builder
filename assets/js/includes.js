@@ -44,7 +44,6 @@
     '<div class="mega-chips">' +
     '<a href="' + rel('pages/service-constructor.html') + '">Grey Structure</a>' +
     '<a href="' + rel('pages/service-constructor.html') + '">Turnkey</a>' +
-    '<a href="' + rel('pages/inventory.html') + '">Plots &amp; Houses</a>' +
     '</div>' +
     '</div>' +
     '</div>' +
@@ -64,7 +63,7 @@
     '<div class="search-panel">' +
     '<form class="search-form" data-search-form>' +
     '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>' +
-    '<input type="text" data-search-input placeholder="Search services, inventory, sectors..." autocomplete="off">' +
+    '<input type="text" data-search-input placeholder="Search services, sectors..." autocomplete="off">' +
     '</form>' +
     '<div class="search-suggest" data-search-suggest>' +
     '<div class="search-suggest-title">Popular Searches</div>' +
@@ -72,8 +71,6 @@
     '<a href="' + rel('pages/services.html') + '">Construction</a>' +
     '<a href="' + rel('pages/real-estate.html') + '">Real Estate</a>' +
     '<a href="' + rel('pages/service-soil-testing.html') + '">Soil Testing</a>' +
-    '<a href="' + rel('pages/inventory.html') + '">Plots &amp; Houses</a>' +
-    '<a href="' + rel('pages/inventory.html') + '">Inventory</a>' +
     '<a href="' + rel('pages/contact.html') + '">Contact</a>' +
     '</div>' +
     '</div>' +
@@ -97,8 +94,6 @@
     '<li><a href="' + rel('pages/service-soil-testing.html') + '">Soil Testing</a></li>' +
     '<li><a href="' + rel('pages/service-smart-home.html') + '">Smart Home Automation</a></li>' +
     '<li><a href="' + rel('pages/real-estate.html') + '">Real Estate &mdash; Societies</a></li>' +
-    '<li><a href="' + rel('pages/project-showcase.html') + '">Projects Showcase</a></li>' +
-    '<li><a href="' + rel('pages/inventory.html') + '">Inventory &mdash; Plots &amp; Houses</a></li>' +
     '</ul>' +
     '</div>' +
     '<div class="fsnm-col">' +
@@ -154,8 +149,7 @@
     '<ul>' +
     '<li><a href="' + rel('pages/about.html') + '">About</a></li>' +
     '<li><a href="' + rel('pages/services.html') + '">Services</a></li>' +
-    '<li><a href="' + rel('pages/project-showcase.html') + '">Projects</a></li>' +
-    '<li><a href="' + rel('pages/inventory.html') + '">Inventory</a></li>' +
+    '<li><a href="' + rel('pages/real-estate.html') + '">Real Estate</a></li>' +
     '<li><a href="' + rel('pages/contact.html') + '">Contact</a></li>' +
     '<li><a href="https://wa.me/923453707530" target="_blank" rel="noopener">WhatsApp</a></li>' +
     '</ul>' +
