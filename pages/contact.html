@@ -10,13 +10,29 @@
   <link rel="icon" type="image/png" href="../assets/images/logo.png">
   <link rel="stylesheet" href="../assets/css/fonts.css">
   <link rel="stylesheet" href="../assets/css/main.css">
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <!-- reCAPTCHA v2 (contact form). Site key is public by design. -->
   <script>
-    /* reCAPTCHA site keys:
-       TEST key (always passes in dev, shows a notice): 6LeIxAcTAAAAAJcZKAq6rWy6nM6vXHrcNIWwGkfc
-       Replace with your production v2 checkbox site key before going live. */
-    window.GS_RECAPTCHA_SITEKEY = '6LeIxAcTAAAAAJcZKAq6rWy6nM6vXHrcNIWwGkfc';
+    window.GS_RECAPTCHA_SITEKEY = '6LcAiegtAAAAAC9rRr6oylSJP19801E3O7_dCJM6';
+    // Google's official public test site key — used ONLY on localhost, where the
+    // production key's registered domain list fails ("Localhost is not in the
+    // list of supported domains"). The test key shows a red demo banner locally.
+    window.GS_RECAPTCHA_TEST_SITEKEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
+    window.gsRecaptchaSiteKey = function () {
+      var h = window.location.hostname;
+      var isLocal = h === 'localhost' || h === '127.0.0.1' || h === '[::1]' || h === '::1' || /\.local$/.test(h);
+      return isLocal ? window.GS_RECAPTCHA_TEST_SITEKEY : window.GS_RECAPTCHA_SITEKEY;
+    };
+    // Widget is rendered explicitly (api.js loads with ?render=explicit below)
+    // so the site key can be picked per environment before the widget is created.
+    window.gsRecaptchaInit = function () {
+      var el = document.getElementById('gs-recaptcha');
+      if (el && !el.dataset.gsRendered) {
+        el.dataset.gsRendered = '1';
+        grecaptcha.render(el, { sitekey: window.gsRecaptchaSiteKey() });
+      }
+    };
   </script>
+  <script src="https://www.google.com/recaptcha/api.js?onload=gsRecaptchaInit&render=explicit" async defer></script>
   <script>
     window.GS_SEARCH_INDEX = [
       { t: 'Contact Us', p: '../pages/contact.html', c: 'Page' },
@@ -117,7 +133,14 @@
             <h3>Send us a message</h3>
             <p class="cf-sub">Name, email and message — that's all we need to get started.</p>
 
-            <form id="cf-form" novalidate>
+            <form id="cf-form" novalidate method="POST" action="https://formsubmit.co/gs.builder2006@gmail.com">
+              <!-- FormSubmit config (directives, not shown in the received email) -->
+              <input type="hidden" name="_subject" value="New website enquiry — GS Builder &amp; Engineers">
+              <input type="hidden" name="_template" value="table">
+              <input type="hidden" name="_captcha" value="false">
+              <input type="hidden" name="_autoresponse"
+                value="Thank you for contacting GS Builder &amp; Engineers. A senior engineer will reply within one working day.">
+              <input type="text" name="_honey" value="" style="display:none" tabindex="-1" aria-hidden="true">
               <div class="cf-field">
                 <input type="text" id="cf-name" name="name" placeholder=" " autocomplete="name" required>
                 <label for="cf-name">Your Name</label>
@@ -137,8 +160,7 @@
               <p class="cf-error" role="alert"></p>
 
               <div class="cf-captcha">
-                <!-- Replace data-sitekey with your production key (see note in <head>). -->
-                <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZKAq6rWy6nM6vXHrcNIWwGkfc"></div>
+                <div class="g-recaptcha" id="gs-recaptcha"></div>
               </div>
 
               <div style="margin-top:30px;">

@@ -125,6 +125,7 @@
     '<li><a href="mailto:gs.builder2006@gmail.com">gs.builder2006@gmail.com</a></li>' +
     '<li><a href="https://www.linkedin.com/company/gs-builder-engineers" target="_blank" rel="noopener">LinkedIn</a></li>' +
     '<li><a href="https://www.facebook.com/gsbuilderengineers" target="_blank" rel="noopener">Facebook</a></li>' +
+    '<li><a href="https://www.instagram.com/gsbuilder2006/" target="_blank" rel="noopener">Instagram</a></li>' +
     '</ul>' +
     '</div>' +
     '</div>' +

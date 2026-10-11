@@ -613,7 +613,7 @@
   }
 
   /* ------------------------------------------------------------------
-      14c. Contact form — floating labels, validation + reCAPTCHA guard
+      14c. Contact form — validation + reCAPTCHA, delivered via FormSubmit
    ------------------------------------------------------------------ */
   function initCfForm() {
     var form = document.querySelector('#cf-form');
@@ -624,6 +624,23 @@
     var msgField = form.querySelector('#cf-message');
     var err = form.querySelector('.cf-error');
     var success = form.querySelector('.cf-success');
+    var submitBtn = form.querySelector('.cf-submit');
+
+    function showSuccess() {
+      if (success) {
+        success.classList.add('show');
+        success.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      form.reset();
+      if (typeof grecaptcha !== 'undefined' && grecaptcha.reset) grecaptcha.reset();
+    }
+
+    function showError(text) {
+      if (err) {
+        err.textContent = text;
+        err.classList.add('show');
+      }
+    }
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -640,19 +657,42 @@
       }
 
       if (problems.length) {
-        if (err) {
-          err.textContent = 'Please provide ' + problems.join(', ') + '.';
-          err.classList.add('show');
-        }
+        showError('Please provide ' + problems.join(', ') + '.');
         return;
       }
       if (err) err.classList.remove('show');
-      if (success) {
-        success.classList.add('show');
-        success.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }
-      form.reset();
-      if (hasCaptcha && typeof grecaptcha !== 'undefined' && grecaptcha.reset) grecaptcha.reset();
+
+      var action = form.getAttribute('action') || '';
+      if (!action || !window.fetch) { showSuccess(); return; } // demo fallback
+
+      // Deliver via FormSubmit's AJAX endpoint so the in-page success
+      // message works without leaving the page.
+      // Falls back to a plain POST (no-JS) to the non-ajax action URL.
+      var url = action.replace('formsubmit.co/', 'formsubmit.co/ajax/');
+      var data = {};
+      form.querySelectorAll('input, textarea').forEach(function (f) {
+        if (f.name && f.name !== 'g-recaptcha-response') data[f.name] = f.value; // long token kept out of the email
+      });
+
+      var original = submitBtn ? submitBtn.innerHTML : '';
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.innerHTML = 'Sending…'; }
+
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(data)
+      })
+        .then(function (res) { return res.json(); })
+        .then(function (json) {
+          if (!json || String(json.success).toLowerCase() !== 'true') throw new Error('delivery failed');
+          showSuccess();
+        })
+        .catch(function () {
+          showError('Sorry — your message could not be sent. Please email gs.builder2006@gmail.com instead.');
+        })
+        .finally(function () {
+          if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = original; }
+        });
     });
   }
 
