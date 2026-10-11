@@ -684,7 +684,12 @@
       })
         .then(function (res) { return res.json(); })
         .then(function (json) {
-          if (!json || String(json.success).toLowerCase() !== 'true') throw new Error('delivery failed');
+          if (!json || String(json.success).toLowerCase() !== 'true') {
+            // Surface FormSubmit's own message (e.g. "form needs activation")
+            // in the console so deployment issues are diagnosable.
+            if (window.console && console.warn && json && json.message) console.warn('FormSubmit:', json.message);
+            throw new Error('delivery failed');
+          }
           showSuccess();
         })
         .catch(function () {
