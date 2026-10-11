@@ -16,7 +16,7 @@
     '<header class="site-header">' +
     '<div class="container">' +
     '<a href="' + rel('index.html') + '" class="site-logo">' +
-    '<img src="' + rel('assets/images/logo.png') + '" alt="GS Builder &amp; Engineers">' +
+    '<img src="' + rel('assets/images/logo.webp') + '" alt="GS Builder &amp; Engineers">' +
     '</a>' +
     '<div class="header-right">' +
     '<nav class="inline-nav" aria-label="Primary">' +
@@ -138,7 +138,7 @@
     '<div class="container">' +
     '<div class="footer-top">' +
     '<div class="footer-col footer-about">' +
-    '<div class="footer-logo"><img src="' + rel('assets/images/logo.png') + '" alt="GS Builder &amp; Engineers"></div>' +
+    '<div class="footer-logo"><img src="' + rel('assets/images/logo.webp') + '" alt="GS Builder &amp; Engineers"></div>' +
     '<p class="footer-desc">GS Builder &amp; Engineers — established in 2006 in Islamabad, Pakistan — is an independent construction and real estate company delivering quality construction, property development and trusted plot sale &amp; purchase services.</p>' +
     '<div class="footer-social">' +
     '<a href="https://www.facebook.com/engfaisalsarwer" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.45 2.89h-2.33v6.99A10 10 0 0 0 22 12z"/></svg></a>' +

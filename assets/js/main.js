@@ -741,7 +741,7 @@
           default listing image
    ------------------------------------------------------------------ */
   function initImageFallback() {
-    var DEFAULT_IMG = (window.GS_SITE_ROOT || '.') + '/assets/images/default-listing.jpg';
+    var DEFAULT_IMG = (window.GS_SITE_ROOT || '.') + '/assets/images/default-listing.webp';
 
     function useDefault(img) {
       if (img.dataset.fallbackApplied) return;
