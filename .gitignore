@@ -1,0 +1,13 @@
+# Secrets — never commit real keys
+.env
+.env.*
+*.env
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Tooling
+node_modules/
+.vercel/
+dist/

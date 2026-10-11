@@ -135,4 +135,21 @@ all resolve to it.
 - All content reflects **GS Builder & Engineers, Islamabad, Pakistan — established 2006**.
 - Society master-plan maps and the company location map are served from `assets/maps/` as branded PDFs (view in new tab or download).
 - No external dependencies — no jQuery, no CDN, works offline (map PDFs use © OpenStreetMap data, attribution included).
-- Contact form is client-side only; wire it to your backend or a service (e.g. Formspree) for live submissions. reCAPTCHA uses Google's test key for development — replace with your production key before launch.
+- Contact form is client-side only, delivered through FormSubmit (`formsubmit.co/gs.builder2006@gmail.com`) so the in-page success message works without a backend.
+- reCAPTCHA v2 is rendered explicitly on the contact page.
+
+## reCAPTCHA Keys & Secrets
+
+| Item | Value / location |
+| --- | --- |
+| Label | `GSBUILDERKEY` |
+| Registered domain | `gsbuilder-swart.vercel.app` |
+| Site key (public) | `window.GS_RECAPTCHA_SITEKEY` in `pages/contact.html` |
+| Test key (localhost only) | Google's official public test key `6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI` |
+| Secret key (PRIVATE) | **Never commit this file.** Store it only in the Vercel dashboard: Project → Settings → Environment Variables (e.g. name `RECAPTCHA_SECRET_KEY`). |
+
+Rules to keep in mind:
+
+- The **site key** is public by design — safe to commit.
+- The **secret key** must never appear in this repository (it is public on GitHub) or in any client-side code.
+- The current setup only gates submission **client-side** (the form cannot submit until the widget is solved). For real bot protection, verify the token server-side against the secret key — a small Vercel serverless function is the natural next step.
