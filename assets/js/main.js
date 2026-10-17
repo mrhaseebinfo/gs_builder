@@ -117,7 +117,14 @@
       var slide = slides[index];
       slide.classList.add('active');
       var nextVideo = slide.querySelector('video');
-      if (nextVideo) { nextVideo.currentTime = 0; nextVideo.play().catch(function(){}); }
+      if (nextVideo) {
+        // Lazy hero videos: only fetch a slide's video when it is shown
+        if (nextVideo.dataset.src && !nextVideo.getAttribute('src')) {
+          nextVideo.src = nextVideo.dataset.src;
+          nextVideo.preload = 'auto';
+        }
+        nextVideo.currentTime = 0; nextVideo.play().catch(function(){}); 
+      }
       if (currEl) currEl.textContent = String(index + 1).padStart(2, '0');
       // retrigger title animation
       var title = slide.querySelector('.hero-slide-title');
