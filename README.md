@@ -50,21 +50,22 @@ gs_builder/
 │   ├── videos/                       # Homepage hero slider videos
 │   ├── maps/                         # ★ Branded map PDFs + PNGs (society maps, office map)
 │   └── images/
-│       ├── logo.png                  # GS Builder & Engineers company logo
-│       ├── default-listing.jpg       # ★ Branded fallback image for missing listing photos
+│       ├── logo.webp                  # GS Builder & Engineers company logo
+│       ├── favicon.png                # favicon (PNG for widest browser support)
+│       ├── default-listing.webp       # ★ Branded fallback image for missing listing photos
 │       ├── cinematic/                # Cinematic construction photography (CTA/vision/design imagery)
 │       ├── city/                     # Skyline, banner & Islamabad city imagery
+│       ├── contact/                  # Contact page imagery
 │       ├── csr/                      # CSR program imagery
 │       ├── clients/                  # Partner university logos
 │       ├── expertise/                # Expertise section imagery
 │       ├── group/                    # Division photos
 │       ├── history/                  # Timeline & international archive imagery
 │       ├── leadership/               # Leader portraits
-│       ├── news/                     # News & events thumbnails
+│       ├── news/                     # News & events thumbnails (branded placeholders)
 │       ├── projects/                 # Project hero images (real GS project photos)
 │       ├── services/                 # Service category & society imagery (real photos)
-│       ├── sectors/                  # Sector hero images
-│       └── societies/                # Society streets & aerial photography
+│       └── sectors/                  # Sector hero images
 ```
 
 The project's content factsheet (company stats, societies, contact details) lives in
@@ -119,7 +120,7 @@ all resolve to it.
 - **Topbar hides on mobile**; header gets a solid dark background so the (larger) hamburger is always visible
 - **Full-screen overlay navigation** with desktop hover layout + mobile accordion
 - **Hero video slider** with slide counter, arrows, autoplay, pause-on-hover
-- **Animated stat counters** (Established 2006 / Employees / Completed Projects)
+- **Animated stat counters** (Established 2006 / Satisfied Customers / Completed Projects) — homepage only
 - **Map PDF contact details rendered in white** — phone, email and badge text are clearly readable on the dark panels of every map PDF
 - **Divisions carousel** (scroll-snap, arrow controls)
 - **About page** — animated **Project Completion 80%** & **Customer Satisfaction 85%** progress bars (count-up numbers + fill-on-scroll), Vision & Mission cards, high-resolution project imagery, partners marquee, timeline since 2006
@@ -133,6 +134,7 @@ all resolve to it.
 ## Notes
 
 - All content reflects **GS Builder & Engineers, Islamabad, Pakistan — established 2006**.
+- Every raster image is served as **WebP** (`assets/images/**.webp`); the favicon stays PNG because some browsers (notably Safari) don't pick up WebP favicons.
 - Society master-plan maps and the company location map are served from `assets/maps/` as branded PDFs (view in new tab or download).
 - No external dependencies — no jQuery, no CDN, works offline (map PDFs use © OpenStreetMap data, attribution included).
 - Contact form is client-side only, delivered through FormSubmit (`formsubmit.co/gs.builder2006@gmail.com`) so the in-page success message works without a backend.

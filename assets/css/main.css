@@ -460,65 +460,78 @@ p {
   }
 }
 
+/* ==========================================================================
+   Hamburger — the mobile menu control. Generous tap target that scales with
+   the device, and morphs into a perfectly centred X when the menu opens.
+   Hidden on desktop, where the inline nav covers the layout.
+   ========================================================================== */
 #nav-icon4 {
-  width: 22px;
-  height: 22px;
   position: relative;
+  width: 46px;
+  height: 42px;
   transform: rotate(0deg);
   cursor: pointer;
-  z-index: 9;
+  z-index: 90;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.07);
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.25s ease;
 }
 
 #nav-icon4 span {
   display: block;
   position: absolute;
-  height: 2px;
-  width: 100%;
+  left: 8px;
+  right: 8px;
+  height: 3px;
   background: #fff;
   border-radius: 9px;
   opacity: 1;
-  left: 0;
   transform: rotate(0deg);
-  transition: 0.25s ease-in-out;
+  transform-origin: 50% 50%;
+  transition: transform 0.3s ease-in-out, top 0.3s ease-in-out,
+    bottom 0.3s ease-in-out, opacity 0.2s ease-in-out;
 }
 
 #nav-icon4 span:nth-child(1) {
-  top: 3px;
-  transform-origin: left center;
+  top: 11px;
 }
 
 #nav-icon4 span:nth-child(2) {
-  top: 10px;
-  transform-origin: left center;
+  top: 50%;
+  margin-top: -1.5px;
 }
 
 #nav-icon4 span:nth-child(3) {
-  bottom: 3px;
-  transform-origin: left center;
+  bottom: 11px;
 }
 
-/* Hamburger is a mobile/menu-only control — the inline nav covers desktop */
 @media (min-width: 1025px) {
   #nav-icon4 {
     display: none;
   }
 }
 
+#nav-icon4:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* Open state — both outer bars meet on the button's exact centre as a clean X */
 #nav-icon4.open span:nth-child(1) {
+  top: 50%;
+  margin-top: -1.5px;
   transform: rotate(45deg);
-  top: 2px;
-  left: 2px;
 }
 
 #nav-icon4.open span:nth-child(2) {
-  width: 0;
   opacity: 0;
 }
 
 #nav-icon4.open span:nth-child(3) {
+  bottom: auto;
+  top: 50%;
+  margin-top: -1.5px;
   transform: rotate(-45deg);
-  top: 18px;
-  left: 2px;
 }
 
 #nav-icon4:hover span {
@@ -3296,45 +3309,7 @@ a.tb-item:hover {
     height: 46px;
   }
 
-  /* Larger, clearly visible hamburger */
-  #nav-icon4 {
-    width: 34px;
-    height: 30px;
-    z-index: 90;
-  }
-
-  #nav-icon4 span {
-    left: 2px;
-    width: 30px;
-    height: 2.5px;
-  }
-
-  #nav-icon4 span:nth-child(1) {
-    top: 5px;
-  }
-
-  #nav-icon4 span:nth-child(2) {
-    top: 14px;
-  }
-
-  #nav-icon4 span:nth-child(3) {
-    top: 23px;
-    bottom: auto;
-  }
-
-  #nav-icon4.open span:nth-child(1) {
-    transform: rotate(45deg);
-    top: 14px;
-    left: 2px;
-  }
-
-  #nav-icon4.open span:nth-child(3) {
-    transform: rotate(-45deg);
-    top: 14px;
-    left: 2px;
-  }
-
-  /* Tuck the search button on very narrow screens */
+  /* Tuck the search button and slim the header row on mobile */
   .header-search-btn {
     width: 38px;
     height: 38px;
@@ -3346,6 +3321,18 @@ a.tb-item:hover {
 }
 
 @media (max-width: 400px) {
+  /* Compact hamburger on small phones so it sits comfortably next to the logo */
+  #nav-icon4 {
+    width: 42px;
+    height: 38px;
+  }
+
+  #nav-icon4 span {
+    left: 7px;
+    right: 7px;
+    height: 3px;
+  }
+
   .header-search-btn {
     display: none;
   }
@@ -4188,6 +4175,7 @@ a.tb-item:hover {
   }
 
   .cform-side {
+    min-width: 0;
     padding: 54px 34px;
   }
 
@@ -4200,6 +4188,7 @@ a.tb-item:hover {
   }
 
   .cform-main {
+    min-width: 0;
     padding: 54px 34px;
   }
 }
@@ -5074,6 +5063,21 @@ img {
 .gsvc-media,
 .gproc-pair {
   --bleed: calc((min(100vw - 100px, 1400px) - 100vw) / 2);
+}
+
+/* Keep the bleed flush with the screen at narrower container paddings */
+@media (max-width: 1200px) {
+  .gsvc-media,
+  .gproc-pair {
+    --bleed: calc((min(100vw - 60px, 1400px) - 100vw) / 2);
+  }
+}
+
+@media (max-width: 1024px) {
+  .gsvc-media,
+  .gproc-pair {
+    --bleed: calc((min(100vw - 40px, 1400px) - 100vw) / 2);
+  }
 }
 
 /* --- Hero: left-aligned chip + heading + text over image --- */
