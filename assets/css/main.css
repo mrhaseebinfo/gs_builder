@@ -729,6 +729,31 @@ p {
   background: linear-gradient(90deg, rgba(3, 20, 39, 0.82) 0%, rgba(3, 20, 39, 0.25) 65%, rgba(3, 20, 39, 0.45) 100%);
 }
 
+/* Slow "Ken Burns" zoom on the active slide's media (video + poster image).
+   Kept subtle (max 1.12x) so the subject never leaves the frame. */
+.hero-slide-media video,
+.hero-slide-media img {
+  transform-origin: 50% 50%;
+  backface-visibility: hidden;
+}
+
+.hero-slide.active .hero-slide-media video,
+.hero-slide.active .hero-slide-media img {
+  animation: heroZoom 16s ease-in-out infinite alternate;
+}
+
+@keyframes heroZoom {
+  from { transform: scale(1); }
+  to   { transform: scale(1.12); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide.active .hero-slide-media video,
+  .hero-slide.active .hero-slide-media img {
+    animation: none;
+  }
+}
+
 .hero-slide-inner {
   position: relative;
   z-index: 2;
@@ -2799,7 +2824,8 @@ p {
   .projects-grid,
   .board-grid,
   .news-grid,
-  .events-grid {
+  .events-grid,
+  .csr-grid {
     grid-template-columns: 1fr;
   }
 
@@ -2842,8 +2868,8 @@ p {
   }
 
   .hero-slide-title {
-    font-size: clamp(34px, 8.4vw, 46px);
-    margin-bottom: 26px;
+    font-size: clamp(32px, 8vw, 44px);
+    margin: 0 0 22px;
   }
 
   .back-to-top {
@@ -2853,6 +2879,58 @@ p {
 
   .timeline-years {
     gap: 30px;
+  }
+}
+
+/* ==========================================================================
+   Hero on portrait phones — media fills the device, FULL frame visible
+   ==========================================================================
+   The videos are exactly 1920×1080 (16:9) and the posters 1280×720 (16:9),
+   so the media uses object-fit: contain: the complete frame is shown,
+   nothing cropped, while a blurred copy of the slide's own poster (passed
+   from JS as --hero-poster) fills the letterboxed bands above and below —
+   the standard fullscreen-video treatment. The heading docks into the
+   lower blurred band so it never covers the sharp picture. */
+@media (max-width: 640px) and (orientation: portrait) {
+  .hero-slider {
+    /* Fill the device; on very short phones grow so the docked heading,
+       button and slide counter never overlap the centered full frame */
+    height: max(100vh, calc(56.25vw + 620px));
+    height: max(100dvh, calc(56.25vw + 620px));
+  }
+
+  /* Blurred backdrop — one layer, built from the slide's own poster */
+  .hero-slide-media::before {
+    content: '';
+    position: absolute;
+    inset: -24px;
+    background-image: var(--hero-poster, none);
+    background-size: cover;
+    background-position: center;
+    filter: blur(16px) brightness(1.12) saturate(1.05);
+    transform: scale(1.12); /* hide the blur's transparent edges */
+  }
+
+  .hero-slide-media video,
+  .hero-slide-media img {
+    object-fit: contain;  /* the FULL frame, edge to edge, uncropped */
+    object-position: center;
+  }
+
+  .hero-slide.active .hero-slide-media video,
+  .hero-slide.active .hero-slide-media img {
+    animation: none;      /* keep every pixel of the frame visible */
+  }
+
+  /* Darken the top & bottom bands so heading and controls stay readable */
+  .hero-slide-media::after {
+    background: linear-gradient(180deg, rgba(3, 20, 39, 0.5) 0%, rgba(3, 20, 39, 0.08) 45%, rgba(3, 20, 39, 0.14) 60%, rgba(3, 20, 39, 0.85) 100%);
+  }
+
+  /* Heading + button dock into the bottom blurred band */
+  .hero-slide-inner {
+    justify-content: flex-end;
+    padding-bottom: 104px; /* clears the slide counter (≈86px) */
   }
 }
 

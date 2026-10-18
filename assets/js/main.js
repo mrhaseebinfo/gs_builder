@@ -103,6 +103,31 @@
     var totEl = slider.querySelector('.slides-frac .tot');
     if (!slides.length) return;
 
+    // Hero media on mobile: swap to the lightweight mobile WebP posters and
+    // expose the active poster as a CSS variable (--hero-poster) so the
+    // blurred backdrop layer in main.css can fill the letterbox bands.
+    var mqMobile = window.matchMedia('(max-width: 640px) and (orientation: portrait)');
+    slides.forEach(function (s) {
+      var v = s.querySelector('video');
+      if (!v || !v.dataset.posterMobile) return;
+      var media = v.parentElement;
+      if (!v.dataset.posterDesktop) v.dataset.posterDesktop = v.getAttribute('poster') || '';
+      var setPoster = function () {
+        var p = mqMobile.matches ? v.dataset.posterMobile : v.dataset.posterDesktop;
+        v.poster = p;
+        if (media) {
+          // Absolute URL: url() inside a CSS custom property is resolved
+          // against the consuming stylesheet, not the page, so a relative
+          // path would 404 (blurred backdrop would silently vanish).
+          var u = new URL(p, document.baseURI).href;
+          media.style.setProperty('--hero-poster', 'url("' + u + '")');
+        }
+      };
+      setPoster();
+      if (mqMobile.addEventListener) mqMobile.addEventListener('change', setPoster);
+      else if (mqMobile.addListener) mqMobile.addListener(setPoster);
+    });
+
     var index = 0;
     var timer = null;
     var SPEED = 9000;

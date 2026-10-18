@@ -88,6 +88,32 @@ Use the "Live Server" extension
 
 Then visit `http://localhost:8000`.
 
+## Manual Deployment (Vercel CLI)
+
+The site ships as plain static files — deploy any time with:
+
+```bash
+bash deploy.sh
+```
+
+The script runs pre-flight checks (required files + every internal link resolved),
+then runs `vercel deploy --prod --yes`. First-time setup only:
+
+```bash
+npm i -g vercel
+vercel login        # once; links this folder to your project
+```
+
+If the live URL ever changes, update it in **one place** (it is the `BASE` constant
+at the top of `tools/seo_inject.py`; the canonical/OG tags already rendered in the
+HTML and `robots.txt`/`sitemap.xml` need a find-and-replace of
+`gsbuilder-swart.vercel.app`).
+
+After each deploy, quick SEO checks:
+- Google Rich Results Test → paste the URL (validates FAQ/Organization JSON-LD)
+- Facebook Sharing Debugger → paste the URL (validates OG image + titles)
+- <https://gsbuilder-swart.vercel.app/sitemap.xml> must list 25 URLs
+
 ## Design System
 
 | Token         | Value     | Usage                          |
@@ -119,7 +145,7 @@ all resolve to it.
 - **FAQ tabs on contact page** — 5 construction + 5 real-estate questions
 - **Topbar hides on mobile**; header gets a solid dark background so the (larger) hamburger is always visible
 - **Full-screen overlay navigation** with desktop hover layout + mobile accordion
-- **Hero video slider** with slide counter, arrows, autoplay, pause-on-hover
+- **Hero video slider** with slide counter, arrows, autoplay, pause-on-hover — on portrait phones the video renders as the **complete, uncropped 16:9 frame** over a blurred self-backdrop (YouTube-style fullscreen look) with light mobile WebP posters swapped in automatically
 - **Animated stat counters** (Established 2006 / Satisfied Customers / Completed Projects) — homepage only
 - **Map PDF contact details rendered in white** — phone, email and badge text are clearly readable on the dark panels of every map PDF
 - **Divisions carousel** (scroll-snap, arrow controls)
@@ -133,6 +159,7 @@ all resolve to it.
 
 ## Notes
 
+- **Hero videos are 22–30 MB each.** For faster mobile delivery, re-encode them in place (same filenames) with fast-start metadata: `ffmpeg -i "Video 3 (1).mp4" -vf scale=-2:720 -c:v libx264 -crf 26 -preset medium -c:a aac -b:a 96k -movflags +faststart out.mp4 && mv out.mp4 "Video 3 (1).mp4"`. Target ≤ 6–8 MB per video.
 - All content reflects **GS Builder & Engineers, Islamabad, Pakistan — established 2006**.
 - Every raster image is served as **WebP** (`assets/images/**.webp`); the favicon stays PNG because some browsers (notably Safari) don't pick up WebP favicons.
 - Society master-plan maps and the company location map are served from `assets/maps/` as branded PDFs (view in new tab or download).
