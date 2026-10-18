@@ -100,21 +100,7 @@
     '<div class="fsnm-header"><a href="' + rel('pages/about.html') + '">The Company</a></div>' +
     '<ul class="fsnm-list">' +
     '<li><a href="' + rel('pages/about.html') + '">About</a></li>' +
-    '<li><a href="' + rel('pages/leadership.html') + '">Leadership</a></li>' +
-    '<li><a href="' + rel('pages/group-companies.html') + '">The Group</a></li>' +
-    '<li><a href="' + rel('pages/csr.html') + '">CSR</a></li>' +
-    '<li><a href="' + rel('pages/news-events.html') + '">News &amp; Events</a></li>' +
     '<li><a href="' + rel('pages/faqs.html') + '">FAQs</a></li>' +
-    '</ul>' +
-    '</div>' +
-    '<div class="fsnm-col">' +
-    '<div class="fsnm-header"><a href="' + rel('pages/expertise.html') + '">Expertise</a></div>' +
-    '<ul class="fsnm-list">' +
-    '<li><a href="' + rel('pages/expertise.html') + '">Expertise Overview</a></li>' +
-    '<li><a href="' + rel('pages/expertise-construction.html') + '">Construction</a></li>' +
-    '<li><a href="' + rel('pages/expertise-design-build.html') + '">Design &amp; Build</a></li>' +
-    '<li><a href="' + rel('pages/expertise-value-engineering.html') + '">Value Engineering</a></li>' +
-    '<li><a href="' + rel('pages/excellence-innovation.html') + '">Excellence &amp; Innovation</a></li>' +
     '</ul>' +
     '</div>' +
     '<div class="fsnm-col">' +
@@ -123,7 +109,6 @@
     '<li><a href="' + rel('pages/contact.html') + '">Contact us</a></li>' +
     '<li><a href="https://wa.me/923453707530" target="_blank" rel="noopener">WhatsApp</a></li>' +
     '<li><a href="mailto:gs.builder2006@gmail.com">gs.builder2006@gmail.com</a></li>' +
-    '<li><a href="https://www.linkedin.com/company/gs-builder-engineers" target="_blank" rel="noopener">LinkedIn</a></li>' +
     '<li><a href="https://www.facebook.com/gsbuilderengineers" target="_blank" rel="noopener">Facebook</a></li>' +
     '<li><a href="https://www.instagram.com/gsbuilder2006/" target="_blank" rel="noopener">Instagram</a></li>' +
     '</ul>' +

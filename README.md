@@ -9,20 +9,11 @@ A complete multi-page static website built with **pure HTML, CSS & JavaScript** 
 ```
 gs_builder/
 │
-├── index.html                        # Homepage (hero video slider, counters, divisions carousel)
+├── index.html                        # Homepage (hero video slider, counters, services, sectors, projects, FAQs)
 │
 ├── pages/                            # All inner pages
 │   ├── about.html                    # Our Story (core values, partners marquee, timeline since 2006)
-│   ├── leadership.html               # Leadership (leader cards + bio modals)
-│   ├── group-companies.html          # The GS Family (specialised divisions)
-│   ├── csr.html                      # Corporate Social Responsibility (4 pillars)
-│   ├── expertise.html                # Expertise overview
-│   ├── expertise-construction.html  # Construction (accordion tabs)
-│   ├── expertise-design-build.html   # Design & Build
-│   ├── expertise-value-engineering.html # Value Engineering
-│   ├── excellence-innovation.html   # Excellence & Innovation (7 processes)
 │   ├── sectors.html                  # 11 sectors with sticky side navigation
-│   ├── news-events.html              # Company News & Upcoming Events
 │   ├── faqs.html                     # 18 FAQs accordion
 │   ├── services.html                 # Services overview hub (links to every category page)
 │   ├── service-constructor.html      # Constructor — Commercial & Residential (FAQs)
@@ -36,6 +27,8 @@ gs_builder/
 │   ├── privacy.html                  # Privacy policy
 │   ├── cookies.html                  # Cookie policy
 │   └── terms.html                    # Terms of use
+│
+├── tools/                            # Maintenance scripts (video re-encode, SEO injection, link check)
 │
 ├── assets/
 │   ├── css/
@@ -112,7 +105,7 @@ HTML and `robots.txt`/`sitemap.xml` need a find-and-replace of
 After each deploy, quick SEO checks:
 - Google Rich Results Test → paste the URL (validates FAQ/Organization JSON-LD)
 - Facebook Sharing Debugger → paste the URL (validates OG image + titles)
-- <https://gsbuilder-swart.vercel.app/sitemap.xml> must list 25 URLs
+- <https://gsbuilder-swart.vercel.app/sitemap.xml> must list the site's current pages (regenerate: see `tools/seo_inject.py` + sitemap script)
 
 ## Design System
 
@@ -136,7 +129,6 @@ all resolve to it.
 - **Society cards show only the society name + actions** (no hover overlay text — works on desktop & touch devices identically); D-17 MVHS is written out in full as "Margalla View Housing Scheme"; **Master Plans strip removed** (downloads happen from the cards)
 - **Contact page map card** — office map image + "Get Directions" pill + "Call First" link
 - **Real photography** — society streets, listings and projects use real site imagery; any missing photo automatically falls back to a branded "Photo coming soon" placeholder with a one-click **Download Image** button
-- **Projects Showcase page** — construction-only showcase (Construction + Turnkey & Finishing streams + clearly-labelled International portfolio); linked from the footer "Projects" link
 - **Navbar "Services" mega-menu card** on hover (all 7 categories + featured society maps + CTA)
 - **Dedicated pages per service category**, each with unique content, imagery, animations and FAQs
 - **Real Estate page** with 8 society cards (name + "Download Map" / "Inventory" actions) and a premium gradient "Browse Inventory" CTA banner
@@ -148,10 +140,7 @@ all resolve to it.
 - **Hero video slider** with slide counter, arrows, autoplay, pause-on-hover — on portrait phones the video renders as the **complete, uncropped 16:9 frame** over a blurred self-backdrop (YouTube-style fullscreen look) with light mobile WebP posters swapped in automatically
 - **Animated stat counters** (Established 2006 / Satisfied Customers / Completed Projects) — homepage only
 - **Map PDF contact details rendered in white** — phone, email and badge text are clearly readable on the dark panels of every map PDF
-- **Divisions carousel** (scroll-snap, arrow controls)
 - **About page** — animated **Project Completion 80%** & **Customer Satisfaction 85%** progress bars (count-up numbers + fill-on-scroll), Vision & Mission cards, high-resolution project imagery, partners marquee, timeline since 2006
-- **Projects page with live filters** (Status / Scope / Sector) + "See More" pagination
-- **Leader bio modals** (click any director card)
 - **FAQ accordion** (18 questions)
 - **Newsletter subscribe** in footer
 - **Scroll-reveal animations**, sticky header, back-to-top, image lightbox
@@ -159,7 +148,7 @@ all resolve to it.
 
 ## Notes
 
-- **Hero videos are 22–30 MB each.** For faster mobile delivery, re-encode them in place (same filenames) with fast-start metadata: `ffmpeg -i "Video 3 (1).mp4" -vf scale=-2:720 -c:v libx264 -crf 26 -preset medium -c:a aac -b:a 96k -movflags +faststart out.mp4 && mv out.mp4 "Video 3 (1).mp4"`. Target ≤ 6–8 MB per video.
+- **Hero videos were re-encoded 79.5 MB → ~28.5 MB total** (720p / CRF 24 / 30 fps / no audio track, `+faststart`; phones auto-download a 540p ~3 MB variant via `data-src-mobile` in `index.html` + `main.js`). To re-encode new sources, run `bash tools/video-optimize.sh "source.mp4" <slide-number>` (needs `npm i --no-save ffmpeg-static`). Images are already WebP-optimal (`python3 tools/image_recompress.py --check` reports savings).
 - All content reflects **GS Builder & Engineers, Islamabad, Pakistan — established 2006**.
 - Every raster image is served as **WebP** (`assets/images/**.webp`); the favicon stays PNG because some browsers (notably Safari) don't pick up WebP favicons.
 - Society master-plan maps and the company location map are served from `assets/maps/` as branded PDFs (view in new tab or download).

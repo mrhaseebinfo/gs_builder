@@ -128,6 +128,16 @@
       else if (mqMobile.addListener) mqMobile.addListener(setPoster);
     });
 
+    // First slide never passes through show() on load — assign the
+    // device-appropriate source up front (phones get the 540p variant).
+    var firstVideo = slides[0].querySelector('video');
+    if (firstVideo && firstVideo.dataset.src && !firstVideo.getAttribute('src')) {
+      firstVideo.src = (mqMobile.matches && firstVideo.dataset.srcMobile)
+        ? firstVideo.dataset.srcMobile
+        : firstVideo.dataset.src;
+      firstVideo.preload = 'auto';
+    }
+
     var index = 0;
     var timer = null;
     var SPEED = 9000;
@@ -143,9 +153,12 @@
       slide.classList.add('active');
       var nextVideo = slide.querySelector('video');
       if (nextVideo) {
-        // Lazy hero videos: only fetch a slide's video when it is shown
+        // Lazy hero videos: only fetch a slide's video when it is shown, in
+        // the size that fits the device (phones get the ~3 MB 540p variant)
         if (nextVideo.dataset.src && !nextVideo.getAttribute('src')) {
-          nextVideo.src = nextVideo.dataset.src;
+          nextVideo.src = (mqMobile.matches && nextVideo.dataset.srcMobile)
+            ? nextVideo.dataset.srcMobile
+            : nextVideo.dataset.src;
           nextVideo.preload = 'auto';
         }
         nextVideo.currentTime = 0; nextVideo.play().catch(function(){}); 
