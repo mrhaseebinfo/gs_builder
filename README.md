@@ -159,7 +159,7 @@ all resolve to it.
 
 ## Notes
 
-- **Hero videos are 22–30 MB each.** For faster mobile delivery, re-encode them in place (same filenames) with fast-start metadata: `ffmpeg -i "Video 3 (1).mp4" -vf scale=-2:720 -c:v libx264 -crf 26 -preset medium -c:a aac -b:a 96k -movflags +faststart out.mp4 && mv out.mp4 "Video 3 (1).mp4"`. Target ≤ 6–8 MB per video.
+- **Hero videos were re-encoded 79.5 MB → ~28.5 MB total** (720p / CRF 24 / 30 fps / no audio track, `+faststart`; phones auto-download a 540p ~3 MB variant via `data-src-mobile` in `index.html` + `main.js`). To re-encode new sources, run `bash tools/video-optimize.sh "source.mp4" <slide-number>` (needs `npm i --no-save ffmpeg-static`). Images are already WebP-optimal (`python3 tools/image_recompress.py --check` reports savings).
 - All content reflects **GS Builder & Engineers, Islamabad, Pakistan — established 2006**.
 - Every raster image is served as **WebP** (`assets/images/**.webp`); the favicon stays PNG because some browsers (notably Safari) don't pick up WebP favicons.
 - Society master-plan maps and the company location map are served from `assets/maps/` as branded PDFs (view in new tab or download).
