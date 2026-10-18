@@ -145,7 +145,7 @@ all resolve to it.
 - **FAQ tabs on contact page** — 5 construction + 5 real-estate questions
 - **Topbar hides on mobile**; header gets a solid dark background so the (larger) hamburger is always visible
 - **Full-screen overlay navigation** with desktop hover layout + mobile accordion
-- **Hero video slider** with slide counter, arrows, autoplay, pause-on-hover
+- **Hero video slider** with slide counter, arrows, autoplay, pause-on-hover — on portrait phones the video renders as the **complete, uncropped 16:9 frame** over a blurred self-backdrop (YouTube-style fullscreen look) with light mobile WebP posters swapped in automatically
 - **Animated stat counters** (Established 2006 / Satisfied Customers / Completed Projects) — homepage only
 - **Map PDF contact details rendered in white** — phone, email and badge text are clearly readable on the dark panels of every map PDF
 - **Divisions carousel** (scroll-snap, arrow controls)
@@ -159,6 +159,7 @@ all resolve to it.
 
 ## Notes
 
+- **Hero videos are 22–30 MB each.** For faster mobile delivery, re-encode them in place (same filenames) with fast-start metadata: `ffmpeg -i "Video 3 (1).mp4" -vf scale=-2:720 -c:v libx264 -crf 26 -preset medium -c:a aac -b:a 96k -movflags +faststart out.mp4 && mv out.mp4 "Video 3 (1).mp4"`. Target ≤ 6–8 MB per video.
 - All content reflects **GS Builder & Engineers, Islamabad, Pakistan — established 2006**.
 - Every raster image is served as **WebP** (`assets/images/**.webp`); the favicon stays PNG because some browsers (notably Safari) don't pick up WebP favicons.
 - Society master-plan maps and the company location map are served from `assets/maps/` as branded PDFs (view in new tab or download).
