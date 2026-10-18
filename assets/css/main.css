@@ -729,6 +729,31 @@ p {
   background: linear-gradient(90deg, rgba(3, 20, 39, 0.82) 0%, rgba(3, 20, 39, 0.25) 65%, rgba(3, 20, 39, 0.45) 100%);
 }
 
+/* Slow "Ken Burns" zoom on the active slide's media (video + poster image).
+   Kept subtle (max 1.12x) so the subject never leaves the frame. */
+.hero-slide-media video,
+.hero-slide-media img {
+  transform-origin: 50% 50%;
+  backface-visibility: hidden;
+}
+
+.hero-slide.active .hero-slide-media video,
+.hero-slide.active .hero-slide-media img {
+  animation: heroZoom 16s ease-in-out infinite alternate;
+}
+
+@keyframes heroZoom {
+  from { transform: scale(1); }
+  to   { transform: scale(1.12); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide.active .hero-slide-media video,
+  .hero-slide.active .hero-slide-media img {
+    animation: none;
+  }
+}
+
 .hero-slide-inner {
   position: relative;
   z-index: 2;
@@ -2764,6 +2789,24 @@ p {
     padding: 20px;
   }
 
+  /* Mobile hero: landscape videos/photos in a full-height portrait hero get
+     cropped ~70%, so the media only takes ~56dvh (about half the screen).
+     object-fit: cover still fills the box, but nearly twice as much of the
+     video stays visible, and the Ken-Burns zoom keeps it cinematic. */
+  .hero-slider {
+    height: 56vh; /* fallback for browsers without dynamic viewport units */
+    height: 56dvh;
+    min-height: 430px;
+  }
+
+  .hero-slide-inner {
+    padding-top: calc(var(--header-h) + 4px);
+  }
+
+  .hero-slide-media::after {
+    background: linear-gradient(180deg, rgba(3, 20, 39, 0.72) 0%, rgba(3, 20, 39, 0.24) 55%, rgba(3, 20, 39, 0.6) 100%);
+  }
+
   .slides-nav button {
     width: 46px;
     height: 46px;
@@ -2842,8 +2885,8 @@ p {
   }
 
   .hero-slide-title {
-    font-size: clamp(34px, 8.4vw, 46px);
-    margin-bottom: 26px;
+    font-size: clamp(32px, 8vw, 44px);
+    margin: 20px 0 22px;
   }
 
   .back-to-top {

@@ -88,6 +88,32 @@ Use the "Live Server" extension
 
 Then visit `http://localhost:8000`.
 
+## Manual Deployment (Vercel CLI)
+
+The site ships as plain static files — deploy any time with:
+
+```bash
+bash deploy.sh
+```
+
+The script runs pre-flight checks (required files + every internal link resolved),
+then runs `vercel deploy --prod --yes`. First-time setup only:
+
+```bash
+npm i -g vercel
+vercel login        # once; links this folder to your project
+```
+
+If the live URL ever changes, update it in **one place** (it is the `BASE` constant
+at the top of `tools/seo_inject.py`; the canonical/OG tags already rendered in the
+HTML and `robots.txt`/`sitemap.xml` need a find-and-replace of
+`gsbuilder-swart.vercel.app`).
+
+After each deploy, quick SEO checks:
+- Google Rich Results Test → paste the URL (validates FAQ/Organization JSON-LD)
+- Facebook Sharing Debugger → paste the URL (validates OG image + titles)
+- <https://gsbuilder-swart.vercel.app/sitemap.xml> must list 25 URLs
+
 ## Design System
 
 | Token         | Value     | Usage                          |
