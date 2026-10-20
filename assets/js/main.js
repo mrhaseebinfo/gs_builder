@@ -128,14 +128,22 @@
       else if (mqMobile.addListener) mqMobile.addListener(setPoster);
     });
 
-    // First slide never passes through show() on load — assign the
-    // device-appropriate source up front (phones get the 540p variant).
+    // Device-appropriate source for a hero video (phones get the 540p variant)
+    function videoSrcFor(v) {
+      return (mqMobile.matches && v.dataset.srcMobile)
+        ? v.dataset.srcMobile
+        : v.dataset.src;
+    }
+    function fetchVideo(v) {
+      v.src = videoSrcFor(v);
+      v.preload = 'auto';
+      v.load();
+    }
+
+    // First slide never passes through show() on load — assign its source up front
     var firstVideo = slides[0].querySelector('video');
     if (firstVideo && firstVideo.dataset.src && !firstVideo.getAttribute('src')) {
-      firstVideo.src = (mqMobile.matches && firstVideo.dataset.srcMobile)
-        ? firstVideo.dataset.srcMobile
-        : firstVideo.dataset.src;
-      firstVideo.preload = 'auto';
+      fetchVideo(firstVideo);
     }
 
     var index = 0;
@@ -156,12 +164,14 @@
         // Lazy hero videos: only fetch a slide's video when it is shown, in
         // the size that fits the device (phones get the ~3 MB 540p variant)
         if (nextVideo.dataset.src && !nextVideo.getAttribute('src')) {
-          nextVideo.src = (mqMobile.matches && nextVideo.dataset.srcMobile)
-            ? nextVideo.dataset.srcMobile
-            : nextVideo.dataset.src;
-          nextVideo.preload = 'auto';
+          fetchVideo(nextVideo);
         }
-        nextVideo.currentTime = 0; nextVideo.play().catch(function(){}); 
+        // Restart only if the video actually progressed — skip the seek on
+        // freshly-fetched videos (they already start at 0).
+        if (nextVideo.currentTime > 0.1) nextVideo.currentTime = 0;
+        nextVideo.play().catch(function(){});
+        // Pre-buffer the slide after this one while the current video plays
+        preloadNextVideo();
       }
       if (currEl) currEl.textContent = String(index + 1).padStart(2, '0');
       // retrigger title animation
@@ -181,6 +191,14 @@
     }
     function stop() { if (timer) clearInterval(timer); }
 
+    // Starts fetching the NEXT slide's video while the current one plays, so
+    // each slide's video is already buffered when the crossfade reaches it —
+    // no frozen first frame or network stall on transition.
+    function preloadNextVideo() {
+      var nv = slides[(index + 1) % slides.length].querySelector('video');
+      if (nv && nv.dataset.src && !nv.getAttribute('src')) fetchVideo(nv);
+    }
+
     var prev = slider.querySelector('[data-slide-prev]');
     var next = slider.querySelector('[data-slide-next]');
     if (prev) prev.addEventListener('click', function () { show(index - 1); start(); });
@@ -195,6 +213,7 @@
       if (v && i !== 0) v.pause();
     });
     start();
+    preloadNextVideo();
   }
 
   /* ------------------------------------------------------------------

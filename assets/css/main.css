@@ -729,30 +729,10 @@ p {
   background: linear-gradient(90deg, rgba(3, 20, 39, 0.82) 0%, rgba(3, 20, 39, 0.25) 65%, rgba(3, 20, 39, 0.45) 100%);
 }
 
-/* Slow "Ken Burns" zoom on the active slide's media (video + poster image).
-   Kept subtle (max 1.12x) so the subject never leaves the frame. */
-.hero-slide-media video,
-.hero-slide-media img {
-  transform-origin: 50% 50%;
-  backface-visibility: hidden;
-}
-
-.hero-slide.active .hero-slide-media video,
-.hero-slide.active .hero-slide-media img {
-  animation: heroZoom 16s ease-in-out infinite alternate;
-}
-
-@keyframes heroZoom {
-  from { transform: scale(1); }
-  to   { transform: scale(1.12); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-slide.active .hero-slide-media video,
-  .hero-slide.active .hero-slide-media img {
-    animation: none;
-  }
-}
+/* The hero video plays at its native scale — no Ken Burns pan/zoom motion is
+   layered on top, so the browser's media pipeline renders it untouched and
+   playback stays smooth. Slides still crossfade via the slide opacity
+   transition above. */
 
 .hero-slide-inner {
   position: relative;
@@ -2915,11 +2895,6 @@ p {
   .hero-slide-media img {
     object-fit: contain;  /* the FULL frame, edge to edge, uncropped */
     object-position: center;
-  }
-
-  .hero-slide.active .hero-slide-media video,
-  .hero-slide.active .hero-slide-media img {
-    animation: none;      /* keep every pixel of the frame visible */
   }
 
   /* Darken the top & bottom bands so heading and controls stay readable */
