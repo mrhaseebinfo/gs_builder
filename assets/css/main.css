@@ -346,18 +346,23 @@ p {
   transform: translateY(-2px);
 }
 
-/* Reveal-on-scroll animation */
-.reveal {
+/* Reveal-on-scroll animation — fade-up (default) + directional/zoom variants */
+.reveal, .reveal-l, .reveal-r, .reveal-zoom {
   opacity: 0;
-  transform: translateY(40px);
   transition: opacity 0.9s ease, transform 0.9s var(--ease);
 }
 
-.reveal.visible {
+.reveal      { transform: translateY(40px); }
+.reveal-l    { transform: translateX(-40px); }
+.reveal-r    { transform: translateX(40px); }
+.reveal-zoom { transform: scale(0.92); }
+
+.reveal.visible,
+.reveal-l.visible,
+.reveal-r.visible,
+.reveal-zoom.visible {
   opacity: 1;
   transform: none;
-  border-radius: 20px;
-  box-shadow: #ffaa00;
 }
 
 .reveal-d1 {
@@ -370,6 +375,60 @@ p {
 
 .reveal-d3 {
   transition-delay: 0.36s;
+}
+
+/* Accent dash + heading underline sweep in while their text reveals.
+   Only applies inside reveal elements, so plain sections keep static lines. */
+.eyebrow::before {
+  transform-origin: left center;
+  transition: transform 0.8s var(--ease) 0.1s;
+}
+
+.h2-line-bottom::after {
+  transform-origin: left center;
+  transition: transform 0.8s var(--ease) 0.2s;
+}
+
+.eyebrow.reveal::before,
+.reveal .eyebrow::before,
+.h2-line-bottom.reveal::after,
+.reveal .h2-line-bottom::after {
+  transform: scaleX(0);
+}
+
+.eyebrow.reveal.visible::before,
+.reveal.visible .eyebrow::before,
+.h2-line-bottom.reveal.visible::after,
+.reveal.visible .h2-line-bottom::after {
+  transform: scaleX(1);
+}
+
+/* Gentle page entrance */
+@keyframes pageIn {
+  from { opacity: 0; }
+}
+
+body {
+  animation: pageIn 0.55s ease both;
+}
+
+/* Scroll progress bar (top of every page, injected by main.js) */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0;
+  z-index: 3000;
+  background: linear-gradient(90deg, var(--eccAccent), #ff6a00);
+  border-radius: 0 3px 3px 0;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.scroll-progress.on {
+  opacity: 1;
 }
 
 /* ==========================================================================
@@ -3791,7 +3850,6 @@ a.tb-item:hover {
 
 .soc-card {
   position: relative;
-  min-height: 400px;
   overflow: hidden;
   border: 1px solid #e4e4e6;
   background: var(--eccDark);
@@ -3802,14 +3860,14 @@ a.tb-item:hover {
   font-family: inherit;
 }
 
+/* Image shows at the box size — the thumb keeps a steady 16:9 frame that
+   matches the landscape society photos, so the picture fills its box edge to
+   edge with no zoom or heavy crop. No scale motion on hover either. */
 .soc-card .soc-thumb {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  position: relative;
   width: 100%;
-  height: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
 }
 
 .soc-card .soc-thumb img {
@@ -3819,23 +3877,29 @@ a.tb-item:hover {
   object-fit: cover;
   object-position: center;
   opacity: .92;
-  transition: transform .6s ease, opacity .4s ease;
+  transition: opacity .4s ease;
 }
 
 .soc-card:hover .soc-thumb img {
-  transform: scale(1.09);
   opacity: 1;
 }
 
 .soc-card .soc-base {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 2;
+  position: relative;
   padding: 24px 22px 20px;
   color: #fff;
-  background: linear-gradient(180deg, transparent, rgba(3, 20, 39, .94) 78%);
+  background: linear-gradient(180deg, rgba(3, 20, 39, .97), var(--eccDark));
+}
+
+/* Short-form label chip above the complete society name */
+.soc-card .soc-tag {
+  display: inline-block;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--eccAccent);
+  margin-bottom: 6px;
 }
 
 .soc-card .soc-base h3 {
@@ -3882,10 +3946,6 @@ a.tb-item:hover {
 @media (max-width: 640px) {
   .soc-grid {
     grid-template-columns: 1fr;
-  }
-
-  .soc-card {
-    min-height: 320px;
   }
 
   .soc-card .soc-base h3 {
@@ -4389,8 +4449,23 @@ a.tb-item:hover {
 
 @media (prefers-reduced-motion: reduce) {
   .st-bg,
-  .reveal {
+  .reveal,
+  .reveal-l,
+  .reveal-r,
+  .reveal-zoom {
     transition: none !important;
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .eyebrow::before,
+  .h2-line-bottom::after {
+    transition: none !important;
+    transform: scaleX(1) !important;
+  }
+
+  body {
     animation: none !important;
   }
 
@@ -5894,5 +5969,78 @@ img {
   .oc-item .icon img {
     width: 52px;
     margin-top: 0;
+  }
+}
+/* ==========================================================================
+   GLOBAL CARD & IMAGE MOTION — attraction layer
+   Text cards: hover lift + accent glow. Media cards: JS 3D tilt + hover
+   shadow. Images: settle from a slight zoom when their card is revealed,
+   and zoom softly on hover.
+   ========================================================================== */
+
+/* Smooth base for the text-led cards (media cards are driven by JS tilt) */
+.csr-card,
+.core-value {
+  transition: transform 0.45s var(--ease), box-shadow 0.45s ease,
+    border-color 0.45s ease, background 0.45s ease;
+}
+
+.csr-card:hover,
+.core-value:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 28px 55px rgba(3, 20, 39, 0.13);
+}
+
+/* Media-led cards: hover shadow (lift comes from the JS tilt) */
+.project-card, .news-card, .event-card, .soc-card, .leader-hero-card,
+.board-card, .gallery-3 .g3 {
+  transition: box-shadow 0.45s ease, border-color 0.45s ease;
+}
+
+.project-card:hover, .news-card:hover, .event-card:hover, .soc-card:hover,
+.leader-hero-card:hover, .board-card:hover, .gallery-3 .g3:hover {
+  box-shadow: 0 30px 60px rgba(3, 20, 39, 0.16);
+}
+
+/* Photos start slightly zoomed while their card is hidden and settle into
+   place as it reveals — a soft Ken Burns settle. Hover keeps a gentle zoom. */
+:is(.project-card.reveal, .reveal .project-card) .project-thumb img,
+:is(.news-card.reveal, .reveal .news-card) .news-thumb img,
+:is(.event-card.reveal, .reveal .event-card) img,
+:is(.soc-card.reveal, .reveal .soc-card) .soc-thumb img,
+:is(.leader-hero-card.reveal, .reveal .leader-hero-card) img,
+:is(.board-card.reveal, .reveal .board-card) img,
+:is(.g3.reveal, .reveal .g3) img,
+.g3 img {
+  transition: transform 1s var(--ease), opacity 0.5s ease;
+}
+
+:is(.g3.reveal:not(.visible), .reveal:not(.visible) .g3) img,
+:is(.project-card.reveal:not(.visible), .reveal:not(.visible) .project-card) .project-thumb img,
+:is(.news-card.reveal:not(.visible), .reveal:not(.visible) .news-card) .news-thumb img,
+:is(.event-card.reveal:not(.visible), .reveal:not(.visible) .event-card) img,
+:is(.soc-card.reveal:not(.visible), .reveal:not(.visible) .soc-card) .soc-thumb img,
+:is(.leader-hero-card.reveal:not(.visible), .reveal:not(.visible) .leader-hero-card) img,
+:is(.board-card.reveal:not(.visible), .reveal:not(.visible) .board-card) img {
+  transform: scale(1.09);
+}
+
+/* soft zoom on un-revealed photo tiles (uni-grid logos excluded on purpose) */
+.gallery-3 .g3 img {
+  transition: transform 0.8s var(--ease), opacity 0.4s ease;
+}
+
+/* no JS tilt / settle for reduced-motion users */
+@media (prefers-reduced-motion: reduce) {
+  :is(.csr-card, .core-value, .project-card, .news-card, .event-card,
+      .soc-card, .leader-hero-card, .board-card, .gallery-3 .g3) {
+    transition: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  :is(.g3 img, .g3.reveal img, .reveal .g3 img) {
+    transition: none !important;
+    transform: none !important;
   }
 }

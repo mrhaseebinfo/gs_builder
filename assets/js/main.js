@@ -217,11 +217,21 @@
   }
 
   /* ------------------------------------------------------------------
-     4. Reveal on scroll
+     4. Reveal on scroll — fade-up (default) + left/right/zoom variants
   ------------------------------------------------------------------ */
   function initReveal() {
-    var els = document.querySelectorAll('.reveal');
+    var els = document.querySelectorAll('.reveal, .reveal-l, .reveal-r, .reveal-zoom');
     if (!els.length) return;
+    // Auto-stagger: siblings that are reveal-family members animate in
+    // sequence, unless the page hand-tuned a delay (reveal-d1/d2/d3).
+    els.forEach(function (el) {
+      if (/reveal-d\d/.test(el.className)) return;
+      var i = 0;
+      for (var p = el.previousElementSibling; p; p = p.previousElementSibling) {
+        if (p.className && p.className.indexOf('reveal') > -1) i++;
+      }
+      if (i) el.style.transitionDelay = Math.min(i, 5) * 80 + 'ms';
+    });
     if (!('IntersectionObserver' in window)) {
       els.forEach(function (e) { e.classList.add('visible'); });
       return;
@@ -235,6 +245,67 @@
       });
     }, { threshold: 0.12 });
     els.forEach(function (e) { io.observe(e); });
+  }
+
+  /* ------------------------------------------------------------------
+     4b. 3D tilt on media cards (fine pointers only; lift included)
+  ------------------------------------------------------------------ */
+  function initTilt() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    var cards = document.querySelectorAll(
+      '.project-card, .news-card, .event-card, .soc-card, .leader-hero-card, .board-card, .gallery-3 .g3');
+    cards.forEach(function (card) {
+      var raf = null;
+      card.addEventListener('mouseenter', function () {
+        card.style.transition = 'transform 0.18s ease-out';
+      });
+      card.addEventListener('mousemove', function (e) {
+        if (raf) return;
+        raf = requestAnimationFrame(function () {
+          raf = null;
+          var r = card.getBoundingClientRect();
+          var x = (e.clientX - r.left) / r.width - 0.5;
+          var y = (e.clientY - r.top) / r.height - 0.5;
+          var clampedX = Math.max(-0.5, Math.min(0.5, x));
+          var clampedY = Math.max(-0.5, Math.min(0.5, y));
+          card.style.transform =
+            'perspective(900px) rotateX(' + (-clampedY * 7).toFixed(2) + 'deg) rotateY(' +
+            (clampedX * 7).toFixed(2) + 'deg) translateY(-6px)';
+        });
+      });
+      card.addEventListener('mouseleave', function () {
+        if (raf) { cancelAnimationFrame(raf); raf = null; }
+        card.style.transition = 'transform 0.5s ease';
+        card.style.transform = '';
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------------
+     4c. Scroll progress bar (top of every page, injected globally)
+  ------------------------------------------------------------------ */
+  function initScrollProgress() {
+    var bar = document.querySelector('.scroll-progress');
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.className = 'scroll-progress';
+      document.body.appendChild(bar);
+    }
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var p = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+      bar.style.width = (p * 100).toFixed(2) + '%';
+      bar.classList.toggle('on', window.scrollY > 10);
+    }
+    var onScroll = function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
   }
 
   /* ------------------------------------------------------------------
@@ -981,6 +1052,8 @@
     initNav();
     initHeroSlider();
     initReveal();
+    initScrollProgress();
+    initTilt();
     initCounters();
     initSectorRows();
     initGroupCarousel();
