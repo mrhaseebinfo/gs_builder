@@ -3954,8 +3954,356 @@ a.tb-item:hover {
 }
 
 /* ------------------------------------------------------------------
-   Real Estate — society cards + stylized SVG map modal
+   Real Estate — society cards + Map Scope (magnifier map viewer)
+   The society card keeps its gold "Download Map" pill; the outline
+   "View Map" pill opens the full-screen scope that magnifies the map.
    -------------------------------------------------------------------------- */
+
+/* "View Map" trigger on the society cards */
+.soc-card .soc-actions .soc-view {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: inherit;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #fff;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, .45);
+  padding: 8px 16px;
+  border-radius: 999px;
+  transition: border-color .25s ease, color .25s ease, transform .25s ease;
+}
+
+.soc-card .soc-actions .soc-view:hover {
+  border-color: var(--eccAccent);
+  color: var(--eccAccent);
+  transform: translateY(-2px);
+}
+
+/* Full-screen viewer — dark chrome bar on top, map stage below */
+.map-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 1300;
+  background: rgba(3, 20, 39, .96);
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s ease, visibility .3s;
+}
+
+.map-viewer.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.mv-top {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  padding: 14px 22px;
+  background: var(--eccDark);
+  border-bottom: 1px solid rgba(255, 170, 0, .25);
+}
+
+.mv-head {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  margin-right: auto;
+}
+
+.mv-kicker {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--eccAccent);
+  margin-bottom: 2px;
+}
+
+.mv-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mv-tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mv-zoom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, .25);
+  border-radius: 999px;
+  padding: 5px 10px;
+}
+
+.mv-zbtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 20px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  transition: background .25s ease, color .25s ease;
+}
+
+.mv-zbtn:hover {
+  background: var(--eccAccent);
+  color: var(--eccDark);
+}
+
+.mv-zval {
+  min-width: 46px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: #fff;
+}
+
+.mv-pdf {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  background: var(--eccAccent);
+  color: var(--eccDark);
+  padding: 10px 18px;
+  border-radius: 999px;
+  transition: background .25s ease;
+}
+
+.mv-pdf:hover {
+  background: var(--gold);
+}
+
+.mv-close {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, .35);
+  color: #fff;
+  font-size: 24px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  transition: all .3s ease;
+}
+
+.mv-close:hover {
+  background: var(--eccAccent);
+  border-color: var(--eccAccent);
+  color: var(--eccDark);
+}
+
+/* Map stage — subtle dot grid, image centered at contain size */
+.mv-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #06182e;
+  background-image: radial-gradient(rgba(255, 255, 255, .05) 1px, transparent 1.4px);
+  background-size: 26px 26px;
+  touch-action: none;
+}
+
+.mv-img {
+  max-width: 100%;
+  max-height: 100%;
+  user-select: none;
+  -webkit-user-drag: none;
+  opacity: 0;
+  transition: opacity .3s ease;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .55);
+}
+
+.mv-img.ready {
+  opacity: 1;
+  cursor: crosshair;
+}
+
+/* The scope lens — samples the same image zoomed via background-position */
+.mv-lens {
+  position: absolute;
+  width: 236px;
+  height: 236px;
+  border-radius: 50%;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  border: 3px solid #fff;
+  box-shadow: 0 26px 60px rgba(0, 0, 0, .55),
+              0 0 0 1px rgba(0, 0, 0, .4),
+              inset 0 0 18px rgba(3, 20, 39, .18);
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0;
+  transform: scale(.92);
+  transition: opacity .16s ease, transform .16s ease;
+}
+
+.mv-lens.on {
+  opacity: 1;
+  transform: none;
+}
+
+/* Crosshair — one thin line each way, faint enough to read text through */
+.mv-lens::before,
+.mv-lens::after {
+  content: '';
+  position: absolute;
+  background: rgba(3, 20, 39, .3);
+}
+
+.mv-lens::before {
+  left: 50%;
+  top: 12%;
+  bottom: 12%;
+  width: 1px;
+  transform: translateX(-.5px);
+}
+
+.mv-lens::after {
+  top: 50%;
+  left: 12%;
+  right: 12%;
+  height: 1px;
+  transform: translateY(-.5px);
+}
+
+/* Spinner while the WebP decodes (loaded only when a viewer opens) */
+.mv-loader {
+  position: absolute;
+  inset: 0;
+  display: none;
+  place-items: center;
+  z-index: 4;
+}
+
+.mv-loader.on {
+  display: grid;
+}
+
+.mv-loader span {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, .18);
+  border-top-color: var(--eccAccent);
+  animation: mv-spin .8s linear infinite;
+}
+
+@keyframes mv-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Error notice (missing/failed WebP — the PDF button stays available) */
+.mv-msg {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  background: rgba(3, 20, 39, .92);
+  border: 1px solid rgba(255, 170, 0, .45);
+  color: #fff;
+  padding: 16px 24px;
+  border-radius: 12px;
+  max-width: 360px;
+  text-align: center;
+  font-size: 15px;
+  line-height: 1.5;
+  z-index: 5;
+}
+
+.mv-msg.on {
+  display: block;
+}
+
+/* One-time usage hint, fades at first lens placement */
+.mv-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  background: rgba(3, 20, 39, .85);
+  border: 1px solid rgba(255, 255, 255, .18);
+  color: rgba(255, 255, 255, .85);
+  font-size: 13px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  white-space: nowrap;
+  z-index: 4;
+  pointer-events: none;
+  transition: opacity .4s ease;
+}
+
+.mv-hint.hide {
+  opacity: 0;
+}
+
+@media (max-width: 640px) {
+  .mv-lens {
+    width: 172px;
+    height: 172px;
+  }
+
+  .mv-top {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+
+  .mv-title {
+    font-size: 15px;
+    max-width: 46vw;
+  }
+
+  .mv-pdf {
+    padding: 9px 14px;
+  }
+
+  .mv-zoom {
+    padding: 4px 8px;
+  }
+
+  .mv-hint {
+    bottom: 14px;
+    font-size: 12px;
+    max-width: 88vw;
+    white-space: normal;
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map-viewer,
+  .mv-lens,
+  .mv-hint {
+    transition: none;
+  }
+}
 
 /* --------------------------------------------------------------------------
    5. Contact — creative form (floating labels, split panel) + FAQ tabs

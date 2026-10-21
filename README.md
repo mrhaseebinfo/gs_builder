@@ -22,7 +22,7 @@ gs_builder/
 │   ├── service-design.html           # Structural & Architectural Design (FAQs)
 │   ├── service-soil-testing.html     # Soil Testing — Geotechnical (FAQs)
 │   ├── service-smart-home.html       # Smart Home Automation (FAQs)
-│   ├── real-estate.html              # Real Estate — 8 societies, real photos, society map PDFs
+│   ├── real-estate.html              # Real Estate — 8 societies, real photos, society map PDFs + map scope viewer
 │   ├── contact.html                  # Contact (creative split form + reCAPTCHA + map card + FAQ tabs)
 │   ├── privacy.html                  # Privacy policy
 │   ├── cookies.html                  # Cookie policy
@@ -41,7 +41,7 @@ gs_builder/
 │   │
 │   ├── fonts/                        # Self-hosted webfonts (woff2 + woff)
 │   ├── videos/                       # Homepage hero slider videos
-│   ├── maps/                         # ★ Branded map PDFs + PNGs (society maps, office map)
+│   ├── maps/                         # ★ Branded map PDFs + high-res WebP renders (society maps, office map)
 │   └── images/
 │       ├── logo.webp                  # GS Builder & Engineers company logo
 │       ├── favicon.png                # favicon (PNG for widest browser support)
@@ -125,6 +125,7 @@ all resolve to it.
 ## Features
 
 - **Company map PDFs** — branded location map for the head office + official master-plan map for each society; every map downloads via the society card "Download Map" button
+- **"Map Scope" viewer** — magnifying-glass map viewer on the Real Estate page. Browsers can't magnify a PDF's layers, so every map PDF has a high-resolution WebP twin (`tools/maps_to_webp.py`, 400 DPI ≈ 4678×3308) that the "View Map" button opens full-screen; a circular scope lens follows the pointer and samples the same image at 1.5–6×, edge-clamped and capped at the image's native pixels so plot numbers stay crisp. Zoom via buttons, scroll wheel or +/− keys; touch drag works on phones. The viewer lazy-loads one ~1 MB WebP only when opened (`assets/js/map-scope.js`)
 - **"Download Map"** (accent button, saves the society's master-plan PDF) + **"Inventory"** link on every society card
 - **Society cards show only the society name + actions** (no hover overlay text — works on desktop & touch devices identically); D-17 MVHS is written out in full as "Margalla View Housing Scheme"; **Master Plans strip removed** (downloads happen from the cards)
 - **Contact page map card** — office map image + "Get Directions" pill + "Call First" link
@@ -151,7 +152,7 @@ all resolve to it.
 - **Hero videos were re-encoded 79.5 MB → ~28.5 MB total** (720p / CRF 24 / 30 fps / no audio track, `+faststart`; phones auto-download a 540p ~3 MB variant via `data-src-mobile` in `index.html` + `main.js`). To re-encode new sources, run `bash tools/video-optimize.sh "source.mp4" <slide-number>` (needs `npm i --no-save ffmpeg-static`). Images are already WebP-optimal (`python3 tools/image_recompress.py --check` reports savings).
 - All content reflects **GS Builder & Engineers, Islamabad, Pakistan — established 2006**.
 - Every raster image is served as **WebP** (`assets/images/**.webp`); the favicon stays PNG because some browsers (notably Safari) don't pick up WebP favicons.
-- Society master-plan maps and the company location map are served from `assets/maps/` as branded PDFs (view in new tab or download).
+- Society master-plan maps and the company location map are served from `assets/maps/` as branded PDFs (download) **plus high-res WebP renders for the Map Scope viewer**. After adding or replacing a map PDF, regenerate its WebP with `python3 tools/maps_to_webp.py` (needs `poppler-utils` + Pillow; `--force` re-renders, or name a single map stem like `d-17-mvhs`).
 - No external dependencies — no jQuery, no CDN, works offline (map PDFs use © OpenStreetMap data, attribution included).
 - Contact form is client-side only, delivered through FormSubmit (`formsubmit.co/gs.builder2006@gmail.com`) so the in-page success message works without a backend.
 - reCAPTCHA v2 is rendered explicitly on the contact page.
