@@ -23,6 +23,7 @@ gs_builder/
 │   ├── service-soil-testing.html     # Soil Testing — Geotechnical (FAQs)
 │   ├── service-smart-home.html       # Smart Home Automation (FAQs)
 │   ├── real-estate.html              # Real Estate — 8 societies, real photos, society map PDFs + map scope viewer
+│   ├── inventory.html                # Property Inventory — plots, shops & apartments (search + filters, data in assets/js/inventory-data.js)
 │   ├── contact.html                  # Contact (creative split form + reCAPTCHA + map card + FAQ tabs)
 │   ├── privacy.html                  # Privacy policy
 │   ├── cookies.html                  # Cookie policy
@@ -126,13 +127,22 @@ all resolve to it.
 
 - **Company map PDFs** — official master-plan map for each society with the GS Builder & Real Estate branding (logo + contact info) on the map; every map downloads via the society card "Download Map" button
 - **"Map Scope" viewer** — magnifying-glass map viewer on the Real Estate page. Browsers can't magnify a PDF's layers, so every map PDF has a high-resolution WebP twin (`tools/maps_to_webp.py` renders scans at their native DPI — e.g. 11765×7969 for Faisal Hills — and vector plans at up to 400 DPI) that the "View Map" button opens full-screen; a circular scope lens follows the pointer and samples the same image at 1.5–6×, edge-clamped and capped at the image's native pixels so plot numbers stay crisp. Zoom via buttons, scroll wheel or +/− keys; touch drag works on phones. The viewer lazy-loads one WebP only when opened (`assets/js/map-scope.js`)
-- **"Download Map"** (accent button, saves the society's master-plan PDF) + **"Inventory"** link on every society card
+- **"Download Map"** (accent button, saves the society's master-plan PDF) + **"Inventory"** link on every society card — the link opens the inventory page pre-filtered to that society (`inventory.html?society=…`)
+- **Property Inventory page** — searchable, filterable listings of plots, shops and apartments for sale and rent. **All listing data lives in one separate file: `assets/js/inventory-data.js`** (never touch the page to add or update a listing — edit the data file and the page, filters, counts, price labels and WhatsApp enquiry links all rebuild automatically). Free-text search matches every space-separated term across title, society, block, reference id and description ("5 marla plot", "shop for rent", "GS-105" all work); filters cover type chips, society, purpose (sale/rent), purpose-aware price bands (Lac/Crore for sale, thousands for rent), unit-aware size bands (Marla for plots/shops, sqft for apartments/shops) and sorting (featured, newest, price ↑/↓, largest). Every filter state is written into the URL, so any filtered view is shareable/bookmarkable, and cards expose a prefilled **Enquire** WhatsApp button + **Call** button. Missing photos fall back to the branded placeholder (`assets/js/inventory.js`, `main.js` image fallback)
+- **Custom WhatsApp number option — set it once, it applies everywhere.** Site-wide numbers live in `GS_SITE` at the top of `assets/js/includes.js`:
+  ```js
+  window.GS_SITE = Object.assign({
+    whatsapp: '923453707530',   // ← change your WhatsApp number here (digits, no '+')
+    phone: '+923453707530'      // ← number used by every tel: link
+  }, window.GS_SITE || {});
+  ```
+  Every WhatsApp link — header nav, footer, floating WhatsApp button, CTA bands on all pages, the inventory empty state — and every `tel:` link is synced to these numbers at runtime (`?text=` prefills are preserved), so changing the number is a one-line edit. Individual inventory listings may also carry their own `whatsapp` / `phone` fields in `assets/js/inventory-data.js` (e.g. a dedicated agent's number) — they fall back to the site-wide numbers when omitted.
 - **Society cards show only the society name + actions** (no hover overlay text — works on desktop & touch devices identically); D-17 MVHS is written out in full as "Margalla View Housing Scheme"; **Master Plans strip removed** (downloads happen from the cards)
 - **Contact page map card** — office map image + "Get Directions" pill + "Call First" link
 - **Real photography** — society streets, listings and projects use real site imagery; any missing photo automatically falls back to a branded "Photo coming soon" placeholder with a one-click **Download Image** button
 - **Navbar "Services" mega-menu card** on hover (all 7 categories + featured society maps + CTA)
 - **Dedicated pages per service category**, each with unique content, imagery, animations and FAQs
-- **Real Estate page** with 8 society cards (name + "Download Map" / "Inventory" actions) and a premium gradient "Browse Inventory" CTA banner
+- **Real Estate page** with 8 society cards (name + "Download Map" / "Inventory" actions), a gold **"Browse Inventory"** button in the hero, and a premium gradient **"Browse Inventory" CTA banner** below the societies grid — its live line ("19 properties are listed right now — 8 plots, 5 shops and 6 apartments, including 4 for rent.") is filled from `assets/js/inventory-data.js` at runtime, so it always matches the inventory page, plus quick-filter chips (Plots / Shops / Apartments / For Rent)
 - **Homepage sectors tiles** on hover the tile widens to double width and reveals the sector photo edge-to-edge (touch devices show images natively)
 - **Creative contact form** — floating labels, name/email/message, Google reCAPTCHA, social links (Facebook & Instagram)
 - **FAQ tabs on contact page** — 5 construction + 5 real-estate questions
