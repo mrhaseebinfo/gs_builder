@@ -3,7 +3,8 @@
    --------------------------------------------------------------------------
    This is the ONLY file you edit to manage the inventory page. Add, remove
    or update a listing below and pages/inventory.html updates automatically
-   (filters, search, counts and WhatsApp enquiries all read from here).
+   (filters, search, counts, price labels and WhatsApp enquiries all read
+   from here).
 
    Each listing supports these fields:
 
@@ -25,9 +26,11 @@
      floor       shop/apartment floor, e.g. 'Ground' (optional)
      status      'available' | 'reserved' | 'booked'
      featured    true = pinned first in the default (Featured) sort
-     image       photo path relative to pages/, e.g.
+     images      OPTIONAL array of 1–3 photos for the card. The first one
+                 is shown; small dots let the visitor switch photos.
+                 [] / missing = branded "Photo coming soon" placeholder.
+                 Paths are relative to pages/, e.g.
                  '../assets/images/services/society-mvhs.webp'
-                 '' = branded "Photo coming soon" placeholder
      description one/two-line sales pitch shown under the title
      date        YYYY-MM-DD, used by the "Newest first" sort
      whatsapp    OPTIONAL custom WhatsApp number for this listing only
@@ -47,7 +50,7 @@
 
 window.GS_INVENTORY = {
 
-  updated: '2026-10-21',
+  updated: '2026-10-22',
 
   listings: [
 
@@ -65,8 +68,11 @@ window.GS_INVENTORY = {
       price: 5200000,
       status: 'available',
       featured: true,
-      image: '../assets/images/services/society-mvhs.webp',
-      description: 'Level, possession-ready plot on a 40ft street — walking distance to the main park and commercial market.',
+      images: [
+        '../assets/images/services/society-mvhs.webp',
+        '../assets/images/city/skyline-hero.webp'
+      ],
+      description: 'Level, possession-ready plot on a 40ft street — walking distance to the main park and market.',
       date: '2026-10-18'
     },
     {
@@ -81,7 +87,7 @@ window.GS_INVENTORY = {
       price: 8800000,
       status: 'reserved',
       featured: false,
-      image: '../assets/images/services/society-mvhs.webp',
+      images: ['../assets/images/services/society-mvhs.webp'],
       description: 'South-facing corner with extra green belt on two sides. Utility connections paid up to date.',
       date: '2026-10-12'
     },
@@ -97,7 +103,7 @@ window.GS_INVENTORY = {
       price: 6500000,
       status: 'available',
       featured: true,
-      image: '../assets/images/services/society-echs.webp',
+      images: ['../assets/images/services/society-echs.webp'],
       description: 'Quiet street plot two minutes from the main boulevard — ideal for a family home build.',
       date: '2026-10-15'
     },
@@ -113,7 +119,7 @@ window.GS_INVENTORY = {
       price: 13500000,
       status: 'available',
       featured: false,
-      image: '../assets/images/services/society-b17.webp',
+      images: ['../assets/images/services/society-b17.webp'],
       description: 'Developed block with active construction around — strong 3–5 year appreciation profile.',
       date: '2026-10-08'
     },
@@ -129,7 +135,11 @@ window.GS_INVENTORY = {
       price: 4800000,
       status: 'available',
       featured: true,
-      image: '../assets/images/services/society-faisal-hills.webp',
+      images: [
+        '../assets/images/services/society-faisal-hills.webp',
+        '../assets/images/city/banner.webp',
+        '../assets/images/services/real-estate-hero.webp'
+      ],
       description: 'Best entry point in Faisal Hills right now — development work in full swing on the block.',
       date: '2026-10-19'
     },
@@ -145,7 +155,7 @@ window.GS_INVENTORY = {
       price: 32000000,
       status: 'available',
       featured: false,
-      image: '../assets/images/services/society-faisal-town.webp',
+      images: ['../assets/images/services/society-faisal-town.webp'],
       description: 'Premium 1 kanal in a fully developed block — grand houses all around, immediate possession.',
       date: '2026-09-29'
     },
@@ -161,7 +171,7 @@ window.GS_INVENTORY = {
       price: 6200000,
       status: 'available',
       featured: false,
-      image: '../assets/images/services/society-mumtaz-city.webp',
+      images: ['../assets/images/services/society-mumtaz-city.webp'],
       description: 'On-ground block near the sector park — clear file, ready for transfer any working day.',
       date: '2026-10-05'
     },
@@ -177,7 +187,7 @@ window.GS_INVENTORY = {
       price: 5800000,
       status: 'booked',
       featured: false,
-      image: '../assets/images/services/society-wapda.webp',
+      images: ['../assets/images/services/society-wapda.webp'],
       description: 'Booked in its first week — similar plots in Block A & C available, ask us for current options.',
       date: '2026-09-22'
     },
@@ -196,8 +206,8 @@ window.GS_INVENTORY = {
       price: 24000000,
       status: 'available',
       featured: true,
-      image: '../assets/images/services/society-mvhs.webp',
-      description: 'Corner shop unit facing the main market road — high footfall area with ATM and bank branch nearby.',
+      images: ['../assets/images/services/society-mvhs.webp'],
+      description: 'Corner shop unit facing the main market road — high footfall area with ATM and bank nearby.',
       date: '2026-10-11'
     },
     {
@@ -212,7 +222,7 @@ window.GS_INVENTORY = {
       price: 18000000,
       status: 'available',
       featured: false,
-      image: '../assets/images/services/society-mumtaz-city.webp',
+      images: ['../assets/images/services/society-mumtaz-city.webp'],
       description: 'Brand-new commercial unit on the boulevard — ideal for a franchise, clinic or showroom.',
       date: '2026-10-02'
     },
@@ -228,7 +238,7 @@ window.GS_INVENTORY = {
       price: 31000000,
       status: 'available',
       featured: false,
-      image: '../assets/images/services/society-b17.webp',
+      images: ['../assets/images/services/society-b17.webp'],
       description: 'Corner commercial plot at the sector entrance — build-to-suit with our in-house design team.',
       date: '2026-09-26'
     },
@@ -245,7 +255,7 @@ window.GS_INVENTORY = {
       floor: 'Ground',
       status: 'available',
       featured: false,
-      image: '../assets/images/services/society-faisal-town.webp',
+      images: ['../assets/images/services/society-faisal-town.webp'],
       description: 'Ground-floor shop in the busy markaz — shutter, mezzanine and washroom already in place.',
       date: '2026-10-14'
     },
@@ -262,7 +272,7 @@ window.GS_INVENTORY = {
       floor: 'First',
       status: 'available',
       featured: false,
-      image: '../assets/images/services/society-wapda.webp',
+      images: ['../assets/images/services/society-wapda.webp'],
       description: 'First-floor shop unit inside the main mall — steady footfall, parking in front, ready to move in.',
       date: '2026-09-30'
     },
@@ -284,7 +294,10 @@ window.GS_INVENTORY = {
       floor: '2nd',
       status: 'available',
       featured: true,
-      image: '../assets/images/services/society-echs.webp',
+      images: [
+        '../assets/images/services/society-echs.webp',
+        '../assets/images/services/design-built-result.webp'
+      ],
       description: 'Bright corner apartment with open kitchen, servant quarter and covered parking — immediate possession.',
       date: '2026-10-16'
     },
@@ -303,7 +316,7 @@ window.GS_INVENTORY = {
       floor: '4th',
       status: 'available',
       featured: false,
-      image: '../assets/images/services/society-mumtaz-city.webp',
+      images: ['../assets/images/services/society-mumtaz-city.webp'],
       description: 'Lift, standby power and 24/7 security in the building — walking distance to the sector mosque.',
       date: '2026-10-06'
     },
@@ -322,7 +335,7 @@ window.GS_INVENTORY = {
       floor: '3rd',
       status: 'available',
       featured: true,
-      image: '../assets/images/services/society-faisal-hills.webp',
+      images: ['../assets/images/services/society-faisal-hills.webp'],
       description: 'Valley-view apartment at pre-launch pricing — installment plan available through our office.',
       date: '2026-10-20'
     },
@@ -341,7 +354,7 @@ window.GS_INVENTORY = {
       floor: '1st',
       status: 'available',
       featured: false,
-      image: '../assets/images/services/society-mvhs.webp',
+      images: ['../assets/images/services/society-mvhs.webp'],
       description: 'Furnished-option family apartment with generator backup — 10+11 month agreement, verified tenants only.',
       date: '2026-10-13'
     },
@@ -360,7 +373,7 @@ window.GS_INVENTORY = {
       floor: 'Ground',
       status: 'booked',
       featured: false,
-      image: '../assets/images/services/society-wapda.webp',
+      images: ['../assets/images/services/society-wapda.webp'],
       description: 'Booked — join our waiting list and we will call you first when the next unit opens in this block.',
       date: '2026-09-25'
     },
@@ -379,7 +392,7 @@ window.GS_INVENTORY = {
       floor: '2nd',
       status: 'available',
       featured: false,
-      image: '../assets/images/services/society-awt.webp',
+      images: ['../assets/images/services/society-awt.webp'],
       description: 'Neat, freshly painted unit near the society gate — family or bachelors (subject to society rules).',
       date: '2026-10-09'
     }

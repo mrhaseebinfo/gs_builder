@@ -8,6 +8,9 @@
    - filters: type chips (Plot / Shop / Apartment), society, purpose
      (sale / rent), price bands (per purpose), size bands (per unit)
    - sorts: Featured first, Newest, Price low→high / high→low, Size
+   - up to 3 optional photos per card (data `images` array) with small
+     dot switchers on the card; missing photos fall back to the
+     branded placeholder
    - live count + empty state + one-click "clear all filters"
    - deep links: every filter lives in the URL
      (?type=shop&society=Faisal+Town&purpose=rent) so a filtered view is
@@ -84,6 +87,16 @@
     return v + ' Marla';
   }
 
+  /* listing photos: `images` array (1–3, optional) with backward
+     compatibility for a plain `image` string; none = branded placeholder */
+  function listingImages(l) {
+    var imgs = [];
+    if (l.images && l.images.length) imgs = l.images.slice(0, 3);
+    else if (l.image) imgs = [l.image];
+    if (!imgs.length) imgs = [DEFAULT_IMG];
+    return imgs;
+  }
+
   function searchableText(l) {
     return [
       l.id, l.title, l.society, l.block, l.description,
@@ -142,7 +155,8 @@
      Rendering
   ------------------------------------------------------------------ */
   function cardHTML(l, i) {
-    var img = l.image || DEFAULT_IMG;
+    var imgs = listingImages(l);
+
     /* Custom number option: a listing may carry its own `whatsapp` /
        `phone` (e.g. a dedicated agent); otherwise the site-wide numbers
        from GS_SITE (assets/js/includes.js) are used. */
@@ -158,15 +172,28 @@
 
     var meta = [];
     var sl = sizeLabel(l);
-    if (sl) meta.push('<li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"/></svg>' + esc(sl) + '</li>');
-    if (l.beds) meta.push('<li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 18v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6M3 18h18M6 10V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v3"/></svg>' + l.beds + ' Bed' + (l.beds > 1 ? 's' : '') + '</li>');
-    if (l.baths) meta.push('<li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12h16M5 12c0-4 1-7 3-7s3 3 3 7M16 12c0-2 0-4 1.5-4S19 10 19 12"/></svg>' + l.baths + ' Bath' + (l.baths > 1 ? 's' : '') + '</li>');
-    if (l.floor) meta.push('<li>' + esc(l.floor) + ' Floor</li>');
+    if (sl) meta.push('<li>' + esc(sl) + '</li>');
+    if (l.beds) meta.push('<li>' + l.beds + ' Bed' + (l.beds > 1 ? 's' : '') + '</li>');
+    if (l.baths) meta.push('<li>' + l.baths + ' Bath' + (l.baths > 1 ? 's' : '') + '</li>');
+    if (l.floor) meta.push('<li>' + esc(l.floor) + '</li>');
+
+    /* dot switchers — only when the listing has more than one photo */
+    var dots = '';
+    if (imgs.length > 1) {
+      dots = '<div class="inv-dots" role="group" aria-label="Listing photos">';
+      for (var d = 0; d < imgs.length; d++) {
+        dots += '<button type="button" class="inv-dot' + (d === 0 ? ' on' : '') +
+          '" data-src="' + esc(imgs[d]) + '" aria-label="Photo ' + (d + 1) +
+          ' of ' + imgs.length + '"></button>';
+      }
+      dots += '</div>';
+    }
 
     return (
-      '<article class="inv-card no-photo-ready" style="animation-delay:' + Math.min(i * 45, 400) + 'ms">' +
+      '<article class="inv-card" style="animation-delay:' + Math.min(i * 35, 320) + 'ms">' +
         '<div class="inv-thumb">' +
-          '<img src="' + esc(img) + '" alt="' + esc(l.title) + ' — ' + esc(l.society) + '" loading="lazy">' +
+          '<img src="' + esc(imgs[0]) + '" alt="' + esc(l.title) + ' — ' + esc(l.society) + '" loading="lazy">' +
+          dots +
           '<span class="inv-chip inv-chip-type">' + TYPE_LABELS[l.type] + '</span>' +
           (l.status !== 'available' ? '<span class="inv-chip inv-chip-status s-' + l.status + '">' + STATUS_LABELS[l.status] + '</span>' : '') +
           (l.purpose === 'rent' ? '<span class="inv-chip inv-chip-rent">For Rent</span>' : '') +
@@ -177,14 +204,13 @@
           '<div class="inv-loc">' + esc(l.block) + '</div>' +
           (meta.length ? '<ul class="inv-meta">' + meta.join('') + '</ul>' : '') +
           '<div class="inv-price">' + formatPrice(l) + '</div>' +
-          '<p class="inv-desc">' + esc(l.description || '') + '</p>' +
           '<div class="inv-actions">' +
             '<a class="inv-wa" href="' + wa + '" target="_blank" rel="noopener">' +
-              '<svg width="15" height="15" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16.04 3C9.02 3 3.32 8.7 3.32 15.72c0 2.24.59 4.42 1.7 6.34L3.2 29l7.13-1.87c1.85 1 3.94 1.54 6.07 1.54h.01c7.01 0 12.72-5.7 12.72-12.72C28.13 8.7 23.06 3 16.04 3zm0 23.33c-1.9 0-3.77-.51-5.4-1.48l-.39-.23-4.03 1.06 1.08-3.93-.25-.4a10.55 10.55 0 0 1-1.62-5.63c0-5.85 4.76-10.61 10.62-10.61 2.83 0 5.49 1.1 7.49 3.11a10.55 10.55 0 0 1-1.5 16.62 10.6 10.6 0 0 1-6 1.49zm5.82-7.94c-.32-.16-1.9-.94-2.19-1.04-.29-.11-.5-.16-.72.16-.21.32-.83.99-1.01 1.2-.19.21-.37.24-.69.08-.32-.16-1.35-.5-2.57-1.59-.95-.85-1.59-1.9-1.78-2.22-.19-.32-.02-.5.14-.66.14-.14.32-.37.48-.56.16-.19.21-.32.32-.53.11-.21.05-.4-.03-.56-.08-.16-.72-1.74-.99-2.38-.26-.62-.53-.54-.72-.55h-.61c-.21 0-.56.08-.85.4-.29.32-1.11 1.09-1.11 2.65s1.14 3.07 1.3 3.29c.16.21 2.21 3.55 5.51 4.83.77.33 1.37.53 1.84.68.77.24 1.47.21 2.03.13.62-.09 1.9-.78 2.17-1.53.27-.75.27-1.39.19-1.53-.08-.13-.29-.21-.61-.37z"/></svg>' +
+              '<svg width="13" height="13" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16.04 3C9.02 3 3.32 8.7 3.32 15.72c0 2.24.59 4.42 1.7 6.34L3.2 29l7.13-1.87c1.85 1 3.94 1.54 6.07 1.54h.01c7.01 0 12.72-5.7 12.72-12.72C28.13 8.7 23.06 3 16.04 3zm0 23.33c-1.9 0-3.77-.51-5.4-1.48l-.39-.23-4.03 1.06 1.08-3.93-.25-.4a10.55 10.55 0 0 1-1.62-5.63c0-5.85 4.76-10.61 10.62-10.61 2.83 0 5.49 1.1 7.49 3.11a10.55 10.55 0 0 1-1.5 16.62 10.6 10.6 0 0 1-6 1.49zm5.82-7.94c-.32-.16-1.9-.94-2.19-1.04-.29-.11-.5-.16-.72.16-.21.32-.83.99-1.01 1.2-.19.21-.37.24-.69.08-.32-.16-1.35-.5-2.57-1.59-.95-.85-1.59-1.9-1.78-2.22-.19-.32-.02-.5.14-.66.14-.14.32-.37.48-.56.16-.19.21-.32.32-.53.11-.21.05-.4-.03-.56-.08-.16-.72-1.74-.99-2.38-.26-.62-.53-.54-.72-.55h-.61c-.21 0-.56.08-.85.4-.29.32-1.11 1.09-1.11 2.65s1.14 3.07 1.3 3.29c.16.21 2.21 3.55 5.51 4.83.77.33 1.37.53 1.84.68.77.24 1.47.21 2.03.13.62-.09 1.9-.78 2.17-1.53.27-.75.27-1.39.19-1.53-.08-.13-.29-.21-.61-.37z"/></svg>' +
               'Enquire' +
             '</a>' +
             '<a class="inv-call" href="' + tel + '">' +
-              '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>' +
+              '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>' +
               'Call' +
             '</a>' +
           '</div>' +
@@ -281,6 +307,25 @@
     els.reset = document.querySelectorAll('.inv-reset');
     els.chips = Array.prototype.slice.call(document.querySelectorAll('.inv-chipbtn'));
     if (!els.grid) return;
+
+    /* photo dots + broken-photo fallback (delegated — cards re-render) */
+    els.grid.addEventListener('click', function (e) {
+      var dot = e.target && e.target.closest ? e.target.closest('.inv-dot') : null;
+      if (!dot) return;
+      var card = dot.closest('.inv-card');
+      var img = card.querySelector('.inv-thumb img');
+      img.src = dot.getAttribute('data-src');
+      var dots = card.querySelectorAll('.inv-dot');
+      for (var k = 0; k < dots.length; k++) {
+        dots[k].classList[dots[k] === dot ? 'add' : 'remove']('on');
+      }
+    });
+    els.grid.addEventListener('error', function (e) {
+      var img = e.target;
+      if (!img || img.tagName !== 'IMG' || img.dataset.fallbackApplied) return;
+      img.dataset.fallbackApplied = '1';
+      img.src = DEFAULT_IMG;
+    }, true);
 
     /* society select options come straight from the data file */
     var societies = [];

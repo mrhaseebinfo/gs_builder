@@ -3983,29 +3983,6 @@ a.tb-item:hover {
   transform: translateY(-2px);
 }
 
-/* "Inventory" link on the society cards — opens the inventory page
-   pre-filtered to that society */
-.soc-card .soc-actions .soc-inv {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--eccAccent);
-  background: transparent;
-  border: 1px solid rgba(255, 170, 0, .45);
-  padding: 8px 16px;
-  border-radius: 999px;
-  transition: background .25s ease, color .25s ease, transform .25s ease;
-}
-
-.soc-card .soc-actions .soc-inv:hover {
-  background: rgba(255, 170, 0, .12);
-  transform: translateY(-2px);
-}
-
 /* Full-screen viewer — dark chrome bar on top, map stage below */
 .map-viewer {
   position: fixed;
@@ -6418,22 +6395,23 @@ img {
 
 /* ==========================================================================
    Property Inventory (pages/inventory.html)
-   Search + filter toolbar, listing cards, empty state. Data lives in
-   assets/js/inventory-data.js; rendering in assets/js/inventory.js.
+   Data lives in assets/js/inventory-data.js; rendering in assets/js/
+   inventory.js. Compact cards: 4-up grid, tight padding, small type —
+   each listing may carry up to 3 photos with dot switchers.
    ========================================================================== */
 
 .inv-toolbar {
   background: #fff;
   border: 1px solid #e4e4e6;
-  padding: 20px;
-  margin-bottom: 26px;
+  padding: 18px;
+  margin-bottom: 22px;
 }
 
 .inv-search-row {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   align-items: stretch;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .inv-search {
@@ -6442,8 +6420,8 @@ img {
   gap: 10px;
   flex: 1;
   border: 1px solid #d9d9dc;
-  padding: 0 16px;
-  min-height: 50px;
+  padding: 0 14px;
+  min-height: 46px;
   background: #fff;
   transition: border-color .25s ease;
 }
@@ -6458,7 +6436,7 @@ img {
   outline: 0;
   background: transparent;
   font: inherit;
-  font-size: 14.5px;
+  font-size: 14px;
   color: var(--eccDark);
   min-width: 0;
 }
@@ -6469,13 +6447,13 @@ img {
   border: 1px solid #d9d9dc;
   background: transparent;
   font: inherit;
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: .08em;
   text-transform: uppercase;
   color: #58585a;
-  padding: 0 22px;
-  min-height: 50px;
+  padding: 0 18px;
+  min-height: 46px;
   cursor: pointer;
   transition: border-color .25s ease, color .25s ease;
 }
@@ -6485,20 +6463,20 @@ img {
 .inv-type-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 9px;
-  margin-bottom: 16px;
+  gap: 8px;
+  margin-bottom: 14px;
 }
 
 .inv-chipbtn {
   border: 1px solid #d9d9dc;
   background: transparent;
   font: inherit;
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: .06em;
   text-transform: uppercase;
   color: #58585a;
-  padding: 9px 18px;
+  padding: 8px 15px;
   cursor: pointer;
   transition: all .25s ease;
 }
@@ -6514,13 +6492,13 @@ img {
 .inv-filters {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
+  gap: 10px;
 }
 
-.inv-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.inv-field { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
 
 .inv-field > span {
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: .12em;
   text-transform: uppercase;
@@ -6533,12 +6511,12 @@ img {
   border: 1px solid #d9d9dc;
   background: #fff
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2358585a' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
-    no-repeat right 14px center;
+    no-repeat right 13px center;
   font: inherit;
-  font-size: 13.5px;
+  font-size: 13px;
   color: var(--eccDark);
-  padding: 0 32px 0 12px;
-  min-height: 46px;
+  padding: 0 30px 0 12px;
+  min-height: 42px;
   cursor: pointer;
   transition: border-color .25s ease;
 }
@@ -6549,23 +6527,23 @@ img {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin: 4px 2px 18px;
+  margin: 2px 2px 14px;
 }
 
 .inv-count {
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 700;
   letter-spacing: .12em;
   text-transform: uppercase;
   color: #9a9aa0;
 }
 
-/* ---- listing cards ---- */
+/* ---- compact listing cards: 4-up grid, tight spacing ---- */
 
 .inv-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
 }
 
 .inv-card {
@@ -6580,7 +6558,7 @@ img {
 }
 
 @keyframes invIn {
-  from { opacity: 0; transform: translateY(14px); }
+  from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: none; }
 }
 
@@ -6604,26 +6582,55 @@ img {
 
 .inv-card:hover .inv-thumb img { opacity: 1; }
 
+/* photo dot switchers (only when a listing has 2–3 photos) */
+.inv-dots {
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.inv-dot {
+  width: 18px;
+  height: 5px;
+  padding: 0;
+  border: 0;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, .55);
+  cursor: pointer;
+  transition: background .25s ease, transform .25s ease;
+}
+
+.inv-dot:hover { background: rgba(255, 255, 255, .85); }
+
+.inv-dot.on {
+  background: var(--eccAccent);
+  transform: scaleX(1.15);
+}
+
 .inv-chip {
   position: absolute;
-  top: 12px;
-  left: 12px;
-  font-size: 10.5px;
+  top: 9px;
+  left: 9px;
+  font-size: 9.5px;
   font-weight: 700;
   letter-spacing: .1em;
   text-transform: uppercase;
-  padding: 6px 10px;
+  padding: 5px 8px;
   line-height: 1;
 }
 
-.inv-chip-type { background: var(--eccDark); color: #fff; left: 12px; }
-.inv-chip-status { background: #b3261e; color: #fff; left: auto; right: 12px; }
+.inv-chip-type { background: var(--eccDark); color: #fff; left: 9px; }
+.inv-chip-status { background: #b3261e; color: #fff; left: auto; right: 9px; }
 .inv-chip-status.s-reserved { background: #a36a00; }
-.inv-chip-rent { background: var(--eccAccent); color: var(--eccDark); top: 44px; }
+.inv-chip-rent { background: var(--eccAccent); color: var(--eccDark); top: 36px; }
 
 .inv-base {
   position: relative;
-  padding: 22px 20px 20px;
+  padding: 14px 14px 13px;
   color: #fff;
   background: linear-gradient(180deg, rgba(3, 20, 39, .97), var(--eccDark));
   flex: 1;
@@ -6632,64 +6639,69 @@ img {
 }
 
 .inv-ref {
-  font-size: 10.5px;
+  font-size: 9.5px;
   font-weight: 700;
   letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--eccAccent);
-  margin-bottom: 7px;
+  margin-bottom: 5px;
 }
 
-.inv-base h3 { font-size: 17.5px; line-height: 1.35; color: #fff; margin-bottom: 5px; }
+.inv-base h3 {
+  font-size: 14px;
+  line-height: 1.35;
+  color: #fff;
+  margin-bottom: 4px;
+}
 
-.inv-loc { font-size: 13px; color: #aab4c2; margin-bottom: 12px; }
+.inv-loc { font-size: 11.5px; color: #aab4c2; margin-bottom: 9px; }
 
-.inv-meta { list-style: none; display: flex; flex-wrap: wrap; gap: 7px 16px; margin: 0 0 14px; }
+.inv-meta { list-style: none; display: flex; flex-wrap: wrap; gap: 5px 12px; margin: 0 0 10px; }
 
 .inv-meta li {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 12.5px;
+  gap: 5px;
+  font-size: 11px;
   color: #aab4c2;
 }
 
-.inv-meta svg { color: var(--eccAccent); flex: none; }
+.inv-meta li svg { color: var(--eccAccent); flex: none; }
 
 .inv-price {
-  font-size: 20px;
+  font-size: 16.5px;
   font-weight: 800;
   color: var(--eccAccent);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
-.inv-price span { font-size: 12px; font-weight: 600; color: #aab4c2; }
+.inv-price span { font-size: 11px; font-weight: 600; color: #aab4c2; }
 
 .inv-desc {
-  font-size: 13.5px;
-  line-height: 1.55;
+  font-size: 12px;
+  line-height: 1.5;
   color: #aab4c2;
-  margin: 0 0 18px;
+  margin: 0 0 13px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-.inv-actions { margin-top: auto; display: flex; gap: 10px; }
+.inv-actions { margin-top: auto; display: flex; gap: 8px; }
 
 .inv-wa {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   background: var(--eccAccent);
   color: var(--eccDark);
-  font-size: 12.5px;
+  font-size: 10.5px;
   font-weight: 800;
   letter-spacing: .05em;
   text-transform: uppercase;
-  padding: 12px 18px;
+  padding: 10px 12px;
   flex: 1;
   transition: background .25s ease;
 }
@@ -6700,14 +6712,14 @@ img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   border: 1px solid rgba(255, 255, 255, .35);
   color: #fff;
-  font-size: 12.5px;
+  font-size: 10.5px;
   font-weight: 800;
   letter-spacing: .05em;
   text-transform: uppercase;
-  padding: 12px 16px;
+  padding: 10px 11px;
   transition: border-color .25s ease;
 }
 
@@ -6718,16 +6730,16 @@ img {
 .inv-empty {
   border: 1.5px dashed #cfcfd4;
   background: #fff;
-  padding: 64px 24px;
+  padding: 56px 22px;
   text-align: center;
   color: var(--eccDark);
 }
 
-.inv-empty svg { color: #b9b9bf; margin-bottom: 14px; }
+.inv-empty svg { color: #b9b9bf; margin-bottom: 12px; }
 
-.inv-empty h3 { font-size: 20px; margin-bottom: 8px; }
+.inv-empty h3 { font-size: 19px; margin-bottom: 8px; }
 
-.inv-empty p { font-size: 14px; color: #58585a; max-width: 460px; margin: 0 auto 22px; }
+.inv-empty p { font-size: 13.5px; color: #58585a; max-width: 460px; margin: 0 auto 20px; }
 
 .inv-empty-actions {
   display: flex;
@@ -6737,49 +6749,41 @@ img {
   flex-wrap: wrap;
 }
 
-.inv-empty .inv-wa { flex: none; padding: 13px 22px; }
-.inv-empty .inv-reset { min-height: 44px; }
+.inv-empty .inv-wa { flex: none; padding: 12px 20px; font-size: 11.5px; }
+.inv-empty .inv-reset { min-height: 42px; }
 
 .inv-note {
-  margin-top: 26px;
-  font-size: 12.5px;
+  margin-top: 22px;
+  font-size: 12px;
   color: #9a9aa0;
   text-align: center;
 }
 
-/* ---- inventory responsive ---- */
+/* ---- "Inventory" link on the Real Estate society cards ---- */
 
-@media (max-width: 1180px) {
-  .inv-filters { grid-template-columns: repeat(3, 1fr); }
-  .inv-grid { grid-template-columns: repeat(2, 1fr); }
+.soc-card .soc-actions .soc-inv {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--eccAccent);
+  background: transparent;
+  border: 1px solid rgba(255, 170, 0, .45);
+  padding: 8px 16px;
+  border-radius: 999px;
+  transition: background .25s ease, color .25s ease, transform .25s ease;
 }
 
-@media (max-width: 768px) {
-  .inv-toolbar { padding: 16px; }
-  .inv-search-row { flex-direction: column; }
-  .inv-search { min-height: 48px; }
-  .inv-reset { width: 100%; }
-  .inv-filters { grid-template-columns: repeat(2, 1fr); }
+.soc-card .soc-actions .soc-inv:hover {
+  background: rgba(255, 170, 0, .12);
+  transform: translateY(-2px);
 }
 
-@media (max-width: 640px) {
-  .inv-grid { grid-template-columns: 1fr; gap: 18px; }
-  .inv-filters { grid-template-columns: 1fr; }
-  .inv-type-chips { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; }
-  .inv-chipbtn { white-space: nowrap; flex: none; }
-  .inv-empty { padding: 46px 18px; }
-}
+/* ---- Real Estate hero: "Browse Inventory" + "Book Consultancy" row ---- */
 
-@media (prefers-reduced-motion: reduce) {
-  .inv-card { animation: none; }
-}
-
-/* ==========================================================================
-   Inventory access on the Real Estate page — hero button row + quick chips
-   in the "Browse Inventory" CTA band + live count line (see inventory-data.js)
-   ========================================================================== */
-
-/* Hero: primary "Browse Inventory" + outline "Book Consultancy" row */
 .hero-btns {
   display: flex;
   flex-wrap: wrap;
@@ -6794,13 +6798,13 @@ img {
   .hero-btns .ecc-button a { width: 100%; box-sizing: border-box; text-align: center; }
 }
 
-/* Quick inventory filter chips under the CTA band buttons */
+/* quick inventory filter chips inside the Real Estate CTA band */
 .inv-quick {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 28px;
+  margin-top: 26px;
 }
 
 .inv-quick a {
@@ -6820,4 +6824,34 @@ img {
   border-color: var(--eccAccent);
   color: var(--eccAccent);
   background: rgba(255, 170, 0, .08);
+}
+
+/* ---- inventory responsive ---- */
+
+@media (max-width: 1180px) {
+  .inv-grid { grid-template-columns: repeat(3, 1fr); }
+  .inv-filters { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 860px) {
+  .inv-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+}
+
+@media (max-width: 768px) {
+  .inv-toolbar { padding: 14px; }
+  .inv-search-row { flex-direction: column; }
+  .inv-reset { width: 100%; }
+  .inv-filters { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 560px) {
+  .inv-grid { grid-template-columns: 1fr; }
+  .inv-filters { grid-template-columns: 1fr; }
+  .inv-type-chips { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; }
+  .inv-chipbtn { white-space: nowrap; flex: none; }
+  .inv-empty { padding: 44px 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inv-card { animation: none; }
 }
