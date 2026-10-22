@@ -31,23 +31,23 @@
      Price / size bands — options in the page's selects carry these ids
   ------------------------------------------------------------------ */
   var PRICE_BANDS = {
-    'sale-under-60':    { purpose: 'sale', min: 0,        max: 6000000 },
-    'sale-60-1cr':      { purpose: 'sale', min: 6000000,  max: 10000000 },
-    'sale-1-2cr':       { purpose: 'sale', min: 10000000, max: 20000000 },
-    'sale-2cr-plus':    { purpose: 'sale', min: 20000000, max: Infinity },
-    'rent-under-60k':   { purpose: 'rent', min: 0,     max: 60000 },
-    'rent-60k-1lac':    { purpose: 'rent', min: 60000, max: 100000 },
-    'rent-1lac-plus':   { purpose: 'rent', min: 100000, max: Infinity }
+    'sale-under-60': { purpose: 'sale', min: 0, max: 6000000 },
+    'sale-60-1cr': { purpose: 'sale', min: 6000000, max: 10000000 },
+    'sale-1-2cr': { purpose: 'sale', min: 10000000, max: 20000000 },
+    'sale-2cr-plus': { purpose: 'sale', min: 20000000, max: Infinity },
+    'rent-under-60k': { purpose: 'rent', min: 0, max: 60000 },
+    'rent-60k-1lac': { purpose: 'rent', min: 60000, max: 100000 },
+    'rent-1lac-plus': { purpose: 'rent', min: 100000, max: Infinity }
   };
 
   var SIZE_BANDS = {
-    'marla-up-to-5':  { unit: 'marla', min: 0,  max: 5 },
-    'marla-5-8':      { unit: 'marla', min: 5,  max: 8 },
-    'marla-10':       { unit: 'marla', min: 8,  max: 12 },
-    'marla-kanal':    { unit: 'marla', min: 18, max: Infinity },
-    'sqft-up-to-1100':   { unit: 'sqft', min: 0,     max: 1100 },
-    'sqft-1100-1400':    { unit: 'sqft', min: 1100,  max: 1400 },
-    'sqft-1400-plus':    { unit: 'sqft', min: 1400,  max: Infinity }
+    'marla-up-to-5': { unit: 'marla', min: 0, max: 5 },
+    'marla-5-8': { unit: 'marla', min: 5, max: 8 },
+    'marla-10': { unit: 'marla', min: 8, max: 12 },
+    'marla-kanal': { unit: 'marla', min: 18, max: Infinity },
+    'sqft-up-to-1100': { unit: 'sqft', min: 0, max: 1100 },
+    'sqft-1100-1400': { unit: 'sqft', min: 1100, max: 1400 },
+    'sqft-1400-plus': { unit: 'sqft', min: 1400, max: Infinity }
   };
 
   var TYPE_LABELS = { plot: 'Plot', shop: 'Shop', apartment: 'Apartment' };
@@ -139,10 +139,10 @@
     var byPrice = function (a, b) { return a.price - b.price; };
     var byDate = function (a, b) { return String(b.date || '').localeCompare(String(a.date || '')); };
     switch (state.sort) {
-      case 'price-asc':  list.sort(function (a, b) { return byPrice(a, b) || byDate(b, a); }); break;
+      case 'price-asc': list.sort(function (a, b) { return byPrice(a, b) || byDate(b, a); }); break;
       case 'price-desc': list.sort(function (a, b) { return byPrice(b, a) || byDate(b, a); }); break;
-      case 'size-desc':  list.sort(function (a, b) { return (b.area || 0) - (a.area || 0); }); break;
-      case 'newest':     list.sort(byDate); break;
+      case 'size-desc': list.sort(function (a, b) { return (b.area || 0) - (a.area || 0); }); break;
+      case 'newest': list.sort(byDate); break;
       /* featured first, then newest */
       default: list.sort(function (a, b) {
         return (!!b.featured - !!a.featured) || byDate(b, a);
@@ -166,7 +166,7 @@
       .replace(/[^+\d]/g, '');
     var wa = 'https://wa.me/' + waNum +
       '?text=' + encodeURIComponent(
-        'Hello GS Builder & Engineers, I am interested in listing ' + l.id +
+        'Hello GS Builder & Engineers, I am interested in listing ' +
         ' — ' + l.title + ' (' + l.society + '). Is it still available?');
     var tel = 'tel:' + telNum;
 
@@ -191,30 +191,30 @@
 
     return (
       '<article class="inv-card" style="animation-delay:' + Math.min(i * 35, 320) + 'ms">' +
-        '<div class="inv-thumb">' +
-          '<img src="' + esc(imgs[0]) + '" alt="' + esc(l.title) + ' — ' + esc(l.society) + '" loading="lazy">' +
-          dots +
-          '<span class="inv-chip inv-chip-type">' + TYPE_LABELS[l.type] + '</span>' +
-          (l.status !== 'available' ? '<span class="inv-chip inv-chip-status s-' + l.status + '">' + STATUS_LABELS[l.status] + '</span>' : '') +
-          (l.purpose === 'rent' ? '<span class="inv-chip inv-chip-rent">For Rent</span>' : '') +
-        '</div>' +
-        '<div class="inv-base">' +
-          '<div class="inv-ref">' + esc(l.id) + ' · ' + esc(l.society) + '</div>' +
-          '<h3>' + esc(l.title) + '</h3>' +
-          '<div class="inv-loc">' + esc(l.block) + '</div>' +
-          (meta.length ? '<ul class="inv-meta">' + meta.join('') + '</ul>' : '') +
-          '<div class="inv-price">' + formatPrice(l) + '</div>' +
-          '<div class="inv-actions">' +
-            '<a class="inv-wa" href="' + wa + '" target="_blank" rel="noopener">' +
-              '<svg width="13" height="13" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16.04 3C9.02 3 3.32 8.7 3.32 15.72c0 2.24.59 4.42 1.7 6.34L3.2 29l7.13-1.87c1.85 1 3.94 1.54 6.07 1.54h.01c7.01 0 12.72-5.7 12.72-12.72C28.13 8.7 23.06 3 16.04 3zm0 23.33c-1.9 0-3.77-.51-5.4-1.48l-.39-.23-4.03 1.06 1.08-3.93-.25-.4a10.55 10.55 0 0 1-1.62-5.63c0-5.85 4.76-10.61 10.62-10.61 2.83 0 5.49 1.1 7.49 3.11a10.55 10.55 0 0 1-1.5 16.62 10.6 10.6 0 0 1-6 1.49zm5.82-7.94c-.32-.16-1.9-.94-2.19-1.04-.29-.11-.5-.16-.72.16-.21.32-.83.99-1.01 1.2-.19.21-.37.24-.69.08-.32-.16-1.35-.5-2.57-1.59-.95-.85-1.59-1.9-1.78-2.22-.19-.32-.02-.5.14-.66.14-.14.32-.37.48-.56.16-.19.21-.32.32-.53.11-.21.05-.4-.03-.56-.08-.16-.72-1.74-.99-2.38-.26-.62-.53-.54-.72-.55h-.61c-.21 0-.56.08-.85.4-.29.32-1.11 1.09-1.11 2.65s1.14 3.07 1.3 3.29c.16.21 2.21 3.55 5.51 4.83.77.33 1.37.53 1.84.68.77.24 1.47.21 2.03.13.62-.09 1.9-.78 2.17-1.53.27-.75.27-1.39.19-1.53-.08-.13-.29-.21-.61-.37z"/></svg>' +
-              'Enquire' +
-            '</a>' +
-            '<a class="inv-call" href="' + tel + '">' +
-              '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>' +
-              'Call' +
-            '</a>' +
-          '</div>' +
-        '</div>' +
+      '<div class="inv-thumb">' +
+      '<img src="' + esc(imgs[0]) + '" alt="' + esc(l.title) + ' — ' + esc(l.society) + '" loading="lazy">' +
+      dots +
+      '<span class="inv-chip inv-chip-type">' + TYPE_LABELS[l.type] + '</span>' +
+      (l.status !== 'available' ? '<span class="inv-chip inv-chip-status s-' + l.status + '">' + STATUS_LABELS[l.status] + '</span>' : '') +
+      (l.purpose === 'rent' ? '<span class="inv-chip inv-chip-rent">For Rent</span>' : '') +
+      '</div>' +
+      '<div class="inv-base">' +
+      '<div class="inv-ref">' + esc(l.society) + '</div>' +
+      '<h3>' + esc(l.title) + '</h3>' +
+      '<div class="inv-loc">' + esc(l.block) + '</div>' +
+      (meta.length ? '<ul class="inv-meta">' + meta.join('') + '</ul>' : '') +
+      '<div class="inv-price">' + formatPrice(l) + '</div>' +
+      '<div class="inv-actions">' +
+      '<a class="inv-wa" href="' + wa + '" target="_blank" rel="noopener">' +
+      '<svg width="13" height="13" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16.04 3C9.02 3 3.32 8.7 3.32 15.72c0 2.24.59 4.42 1.7 6.34L3.2 29l7.13-1.87c1.85 1 3.94 1.54 6.07 1.54h.01c7.01 0 12.72-5.7 12.72-12.72C28.13 8.7 23.06 3 16.04 3zm0 23.33c-1.9 0-3.77-.51-5.4-1.48l-.39-.23-4.03 1.06 1.08-3.93-.25-.4a10.55 10.55 0 0 1-1.62-5.63c0-5.85 4.76-10.61 10.62-10.61 2.83 0 5.49 1.1 7.49 3.11a10.55 10.55 0 0 1-1.5 16.62 10.6 10.6 0 0 1-6 1.49zm5.82-7.94c-.32-.16-1.9-.94-2.19-1.04-.29-.11-.5-.16-.72.16-.21.32-.83.99-1.01 1.2-.19.21-.37.24-.69.08-.32-.16-1.35-.5-2.57-1.59-.95-.85-1.59-1.9-1.78-2.22-.19-.32-.02-.5.14-.66.14-.14.32-.37.48-.56.16-.19.21-.32.32-.53.11-.21.05-.4-.03-.56-.08-.16-.72-1.74-.99-2.38-.26-.62-.53-.54-.72-.55h-.61c-.21 0-.56.08-.85.4-.29.32-1.11 1.09-1.11 2.65s1.14 3.07 1.3 3.29c.16.21 2.21 3.55 5.51 4.83.77.33 1.37.53 1.84.68.77.24 1.47.21 2.03.13.62-.09 1.9-.78 2.17-1.53.27-.75.27-1.39.19-1.53-.08-.13-.29-.21-.61-.37z"/></svg>' +
+      'Enquire' +
+      '</a>' +
+      '<a class="inv-call" href="' + tel + '">' +
+      '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>' +
+      'Call' +
+      '</a>' +
+      '</div>' +
+      '</div>' +
       '</article>'
     );
   }

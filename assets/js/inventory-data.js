@@ -70,7 +70,6 @@ window.GS_INVENTORY = {
       featured: true,
       images: [
         '../assets/images/services/society-mvhs.webp',
-        '../assets/images/city/skyline-hero.webp'
       ],
       description: 'Level, possession-ready plot on a 40ft street — walking distance to the main park and market.',
       date: '2026-10-18'
@@ -137,8 +136,6 @@ window.GS_INVENTORY = {
       featured: true,
       images: [
         '../assets/images/services/society-faisal-hills.webp',
-        '../assets/images/city/banner.webp',
-        '../assets/images/services/real-estate-hero.webp'
       ],
       description: 'Best entry point in Faisal Hills right now — development work in full swing on the block.',
       date: '2026-10-19'
