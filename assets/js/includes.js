@@ -1,7 +1,9 @@
 /* ==========================================================================
    GS Builder & Engineers - Page includes (header, nav, footer)
    Injects the shared header / fullscreen menu / footer into every page.
-   Configure social links & nav via GS_SITE if needed.
+   Site-wide contact options (WhatsApp + phone numbers) live in the
+   GS_SITE config at the top of this file — change them once and every
+   link on every page updates automatically.
    ========================================================================== */
 
 (function () {
@@ -9,7 +11,50 @@
 
   var ROOT = (document.currentScript && document.currentScript.dataset.root) || '.';
 
+  /* ------------------------------------------------------------------
+     Site-wide contact options — THE place to change your WhatsApp
+     number (and the number used by every tel: link). It applies
+     everywhere automatically: header, fullscreen menu, footer, the
+     floating WhatsApp button, every page's static WhatsApp / phone
+     links and the inventory enquiry buttons — all are kept in sync at
+     runtime, ?text= prefills included.
+
+       whatsapp → digits only, international format, no '+'
+                   (e.g. '923453707530')
+       phone    → international format with '+' for tel: links
+                   (e.g. '+923453707530')
+
+     A single page may override either value by defining
+     window.GS_SITE = { whatsapp: '…' } BEFORE this script loads.
+     Inventory listings may also carry their own per-listing
+     `whatsapp` / `phone` fields (see assets/js/inventory-data.js).
+    ------------------------------------------------------------------ */
+  window.GS_SITE = Object.assign({
+    whatsapp: '923453707530',
+    phone: '+923453707530'
+  }, window.GS_SITE || {});
+
   function rel(p) { return ROOT + '/' + p; }
+
+  /* ------------------------------------------------------------------
+     Keep every WhatsApp / phone link in the document in sync with the
+     options above. Pages keep the links hardcoded (so they still work
+     without JavaScript); this rewrites them to the configured number,
+     preserving any ?text= prefill.
+    ------------------------------------------------------------------ */
+  function syncContactLinks() {
+    var wa = String(window.GS_SITE.whatsapp || '').replace(/[^\d]/g, '');
+    var phone = String(window.GS_SITE.phone || '').replace(/[^+\d]/g, '');
+    var links = document.querySelectorAll('a[href]');
+    for (var i = 0; i < links.length; i++) {
+      var href = links[i].getAttribute('href') || '';
+      if (wa && href.indexOf('https://wa.me/') === 0) {
+        links[i].setAttribute('href', href.replace(/^(https:\/\/wa\.me\/)\+?\d+/, '$1' + wa));
+      } else if (phone && href.indexOf('tel:') === 0) {
+        links[i].setAttribute('href', 'tel:' + phone);
+      }
+    }
+  }
 
   /* ---------------------------------------------------------------- */
   var HEADER_HTML =
@@ -40,6 +85,7 @@
     '<div class="mega-cat"><i></i>Real Estate</div>' +
     '<div class="mega-links">' +
     '<a class="mega-link" href="' + rel('pages/real-estate.html') + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg><span>Real Estate Overview<small>Sale &amp; purchase &mdash; plots to shops</small></span></a>' +
+    '<a class="mega-link" href="' + rel('pages/inventory.html') + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-4h6v4M9 10h1M14 10h1"/></svg><span>Property Inventory<small>Plots, shops &amp; apartments &mdash; live listings</small></span></a>' +
     '</div>' +
     '<div class="mega-chips">' +
     '<a href="' + rel('pages/service-constructor.html') + '">Grey Structure</a>' +
@@ -94,6 +140,7 @@
     '<li><a href="' + rel('pages/service-soil-testing.html') + '">Soil Testing</a></li>' +
     '<li><a href="' + rel('pages/service-smart-home.html') + '">Smart Home Automation</a></li>' +
     '<li><a href="' + rel('pages/real-estate.html') + '">Real Estate &mdash; Societies</a></li>' +
+    '<li><a href="' + rel('pages/inventory.html') + '">Property Inventory &mdash; Plots, Shops &amp; Flats</a></li>' +
     '</ul>' +
     '</div>' +
     '<div class="fsnm-col">' +
@@ -136,6 +183,7 @@
     '<li><a href="' + rel('pages/about.html') + '">About</a></li>' +
     '<li><a href="' + rel('pages/services.html') + '">Services</a></li>' +
     '<li><a href="' + rel('pages/real-estate.html') + '">Real Estate</a></li>' +
+    '<li><a href="' + rel('pages/inventory.html') + '">Property Inventory</a></li>' +
     '<li><a href="' + rel('pages/contact.html') + '">Contact</a></li>' +
     '<li><a href="https://wa.me/923453707530" target="_blank" rel="noopener">WhatsApp</a></li>' +
     '</ul>' +
@@ -184,6 +232,8 @@
     var fmount = document.querySelector('[data-include="footer"]');
     if (fmount) { fmount.outerHTML = FOOTER_HTML; }
     if (document.body) document.body.dataset.root = ROOT;
+    /* One place, every link — sync WhatsApp/phone links site-wide. */
+    syncContactLinks();
   }
 
   // Expose root so main.js search can resolve relative links

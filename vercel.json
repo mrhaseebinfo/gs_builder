@@ -29,6 +29,12 @@
       ]
     },
     {
+      "source": "/assets/maps/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=2592000, stale-while-revalidate=86400" }
+      ]
+    },
+    {
       "source": "/assets/js/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=1800, stale-while-revalidate=604800" }
