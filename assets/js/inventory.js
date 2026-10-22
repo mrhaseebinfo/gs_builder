@@ -31,8 +31,7 @@
      Price / size bands — options in the page's selects carry these ids
   ------------------------------------------------------------------ */
   var PRICE_BANDS = {
-    'sale-under-60': { purpose: 'sale', min: 0, max: 6000000 },
-    'sale-60-1cr': { purpose: 'sale', min: 6000000, max: 10000000 },
+    'sale-under-1cr': { purpose: 'sale', min: 0, max: 10000000 },
     'sale-1-2cr': { purpose: 'sale', min: 10000000, max: 20000000 },
     'sale-2cr-plus': { purpose: 'sale', min: 20000000, max: Infinity },
     'rent-under-60k': { purpose: 'rent', min: 0, max: 60000 },
@@ -259,7 +258,10 @@
         if (opt) state.society = s;
       }
       if (p.get('purpose') === 'sale' || p.get('purpose') === 'rent') state.purpose = p.get('purpose');
-      if (p.get('price') && PRICE_BANDS[p.get('price')]) state.price = p.get('price');
+      var price = p.get('price');
+      /* legacy band ids from earlier pages → current bands */
+      if (price === 'sale-under-60' || price === 'sale-60-1cr') price = 'sale-under-1cr';
+      if (price && PRICE_BANDS[price]) state.price = price;
       if (p.get('size') && SIZE_BANDS[p.get('size')]) state.size = p.get('size');
       if (p.get('sort')) state.sort = p.get('sort');
       if (p.get('q')) els.q.value = state.q;
